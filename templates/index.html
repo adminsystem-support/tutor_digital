@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- 1. HERO SECTION - Lebih Dinamis dan Fokus pada Solusi -->
+<div class="hero-section bg-transparent text-white py-5 mb-5 rounded-3">
+    <div class="container text-center">
+        <!-- Judul menggunakan warna aksen Soft Gold -->
+        <h1 class="display-4 fw-bolder mb-3 animate__animated animate__fadeInDown" style="color: #D4AF37 !important;">
+            Siap Jadi Jagoan Digital? 🚀
+        </h1>
+        <p class="lead mb-4 text-muted animate__animated animate__fadeIn">
+            Upgrade skillmu di bidang Web Dev, Data Science, dan Desain Grafis. <br class="d-none d-md-inline">
+            Mulai karir impianmu dari sekarang!
+        </p>
+        
+        <!-- Tombol CTA (Call to Action) Utama - Menggunakan btn-primary (Soft Gold) -->
+        <a href="#featured-courses" class="btn btn-primary btn-lg fw-bold shadow-lg me-3 animate__animated animate__pulse animate__infinite">
+            Lihat Semua Kursus
+        </a>
+        {% if not current_user.is_authenticated %}
+        <!-- Tombol Outline - Menggunakan btn-outline-primary (Soft Gold Outline) -->
+        <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg fw-bold shadow-sm animate__animated animate__fadeInUp">
+            Daftar Gratis!
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 2. SEARCH BAR (Dihapus) -->
+
+<!-- 3. VALUE PROPOSITION (Mengapa Harus Kami?) -->
+<div class="container my-5 py-3">
+    <h3 class="text-center mb-5 fw-bold" style="color: #D4AF37 !important;">Kenapa Harus Jago Komputer?</h3>
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <!-- Card Glassmorphism -->
+            <div class="card h-100 border-0 shadow-lg p-4 hover-scale">
+                <!-- Ikon menggunakan warna aksen Soft Gold -->
+                <i class="bi bi-lightning-charge-fill mb-3" style="font-size: 2rem; color: #D4AF37 !important;"></i>
+                <h5 class="fw-bold">Materi Kekinian</h5>
+                <p class="text-muted">Belajar teknologi terbaru yang dipakai industri, bukan teori usang.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Card Glassmorphism -->
+            <div class="card h-100 border-0 shadow-lg p-4 hover-scale">
+                <i class="bi bi-laptop-fill mb-3" style="font-size: 2rem; color: #D4AF37 !important;"></i>
+                <h5 class="fw-bold">Belajar Fleksibel</h5>
+                <p class="text-muted">Akses 24/7. Atur jadwal belajarmu sendiri, cocok buat anak sekolah!</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Card Glassmorphism -->
+            <div class="card h-100 border-0 shadow-lg p-4 hover-scale">
+                <i class="bi bi-patch-check-fill mb-3" style="font-size: 2rem; color: #D4AF37 !important;"></i>
+                <h5 class="fw-bold">Sertifikat Resmi</h5>
+                <p class="text-muted">Dapatkan sertifikat yang bisa kamu lampirkan di portofolio atau CV.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. KATEGORI UTAMA - Lebih Interaktif dan Visual -->
+<div class="mt-5 pt-3">
+    <h3 class="mb-4 fw-bold text-center" style="color: #D4AF37 !important;">Jelajahi Kategori Populer</h3>
+    <p class="text-center text-muted mb-5">Pilih bidang yang paling kamu suka dan mulai belajar hari ini!</p>
+    
+    <div class="row g-4 text-center justify-content-center">
+        {% set categories = [
+            {'name': 'Web Dev', 'icon': 'code-slash', 'desc': 'Bikin website keren dari nol.'},
+            {'name': 'Data Science', 'icon': 'graph-up', 'desc': 'Analisis data dan AI.'},
+            {'name': 'Desain Grafis', 'icon': 'palette', 'desc': 'Jago Photoshop & Illustrator.'},
+            {'name': 'Jaringan', 'icon': 'router', 'desc': 'Dasar-dasar koneksi internet.'},
+            {'name': 'Office', 'icon': 'file-earmark-text', 'desc': 'Mahir Word, Excel, PowerPoint.'}
+        ] %}
+        
+        {% for cat in categories %}
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="{{ url_for('courses_by_category', category_name=cat.name) }}" class="text-decoration-none">
+                <!-- Menggunakan kelas 'category-hover-effect' dan 'card' Glassmorphism -->
+                <div class="card border-0 shadow-lg h-100 category-hover-effect" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+                        <!-- Ikon menggunakan warna aksen Soft Gold -->
+                        <i class="bi bi-{{ cat.icon }} mb-2" style="font-size: 2.5rem; color: #D4AF37 !important;"></i>
+                        <h6 class="fw-bolder text-dark mb-1">{{ cat.name }}</h6>
+                        <small class="text-muted d-none d-md-block">{{ cat.desc }}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 5. KURSUS UNGGULAN (Featured Courses) -->
+<div id="featured-courses" class="mt-5 pt-5">
+    <h3 class="mb-4 fw-bold text-center" style="color: #D4AF37 !important;">Kursus Paling Populer 🔥</h3>
+    <p class="text-center text-muted mb-5">Lihat kursus yang paling banyak diminati oleh siswa lain.</p>
+    
+    <div class="row g-4">
+        {% for course in courses[:4] %}
+        <div class="col-md-6 col-lg-3">
+            <!-- Menggunakan _course_card.html yang sudah disesuaikan dengan Glassmorphism -->
+            {% include '_course_card.html' %} 
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="text-center mt-5">
+        <!-- Tombol Utama (Soft Gold) -->
+        <a href="{{ url_for('search') }}" class="btn btn-primary btn-lg fw-bold shadow-lg hover-scale">
+            Lihat Semua Kursus ({{ courses|length }})
+        </a>
+    </div>
+</div>
+
+{% endblock %}

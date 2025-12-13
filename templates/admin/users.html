@@ -1,0 +1,70 @@
+{% extends "admin/base.html" %}
+
+{% block admin_content %}
+
+<!-- Header dan Tombol Tambah Pengguna -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Judul menggunakan warna aksen Soft Gold -->
+    <h3 class="fw-bold" style="color: #D4AF37 !important;"><i class="bi bi-people-fill me-2"></i> Manajemen Pengguna</h3>
+    
+    <!-- TOMBOL TAMBAH PENGGUNA BARU (Menggunakan btn-primary Soft Gold) -->
+    <a href="{{ url_for('admin_add_user') }}" class="btn btn-primary fw-bold hover-scale">
+        <i class="bi bi-person-plus-fill me-2"></i> Tambah Pengguna Baru
+    </a>
+</div>
+
+<!-- Tabel Pengguna (Menggunakan Glassmorphism Card) -->
+<div class="card p-4">
+    <div class="table-responsive">
+        <!-- Menggunakan table-dark untuk Glassmorphism Table Style -->
+        <table class="table table-dark table-hover align-middle" style="border-radius: 10px; overflow: hidden;">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.id }}</th>
+                    <td>
+                        <!-- Link menggunakan warna aksen Soft Gold -->
+                        <a href="{{ url_for('admin_user_detail', user_id=user.id) }}" class="fw-bold" style="color: #D4AF37 !important;">{{ user.username }}</a>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.is_admin %}
+                            <!-- Badge Admin Merah -->
+                            <span class="badge bg-danger"><i class="bi bi-shield-fill me-1"></i> Admin</span>
+                        {% else %}
+                            <!-- Badge Pengguna Biasa -->
+                            <span class="badge bg-secondary">Pengguna</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.id != current_user.id %}
+                            <a href="{{ url_for('admin_toggle_admin', user_id=user.id) }}" 
+                               class="btn btn-sm fw-bold {% if user.is_admin %}btn-outline-danger{% else %}btn-outline-success{% endif %}"
+                               title="Ubah Status Admin">
+                                {% if user.is_admin %}
+                                    <i class="bi bi-person-x-fill"></i> Hapus Admin
+                                {% else %}
+                                    <i class="bi bi-person-check-fill"></i> Jadikan Admin
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <span class="text-muted small">Anda</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

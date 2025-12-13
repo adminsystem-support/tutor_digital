@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mb-4">Detail Pengguna: {{ target_user.username }}</h1>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary btn-sm mb-3">← Kembali ke Manajemen Pengguna</a>
+    
+    <div class="row">
+        <!-- Kartu Info Dasar -->
+        <div class="col-md-4 mb-4">
+            <div class="card p-4 h-100">
+                <h4 class="card-title">Info Dasar</h4>
+                <p><strong>Email:</strong> {{ target_user.email }}</p>
+                <p><strong>Status:</strong> 
+                    {% if target_user.is_admin %}
+                        <span class="badge bg-success">Administrator</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Pengguna Biasa</span>
+                    {% endif %}
+                </p>
+                <p><strong>Total Kursus Diikuti:</strong> {{ user_courses|length }}</p>
+            </div>
+        </div>
+        
+        <!-- Daftar Kursus yang Diikuti -->
+        <div class="col-md-8 mb-4">
+            <div class="card p-4 h-100">
+                <h4 class="card-title">Kursus yang Diikuti</h4>
+                
+                {% if user_courses %}
+                <ul class="list-group list-group-flush">
+                    {% for item in user_courses %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center card mb-2 p-3">
+                        <div>
+                            <a href="{{ url_for('course_detail', course_id=item.course.id) }}" class="fw-bold text-warning">{{ item.course.title }}</a>
+                            <div class="progress mt-1" style="height: 15px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ item.progress }}%;" aria-valuenow="{{ item.progress }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ item.progress }}%
+                                </div>
+                            </div>
+                        </div>
+                        <span class="badge bg-info text-dark">{{ item.progress }}%</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="alert alert-warning text-center">
+                    Pengguna ini belum mengikuti kursus apapun.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

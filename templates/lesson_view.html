@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb glass-card p-2 rounded-3">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Kursus</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('course_detail', course_id=lesson.course.id) }}">{{ lesson.course.title }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ lesson.title }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <!-- Kolom Kiri: Konten Pelajaran -->
+    <div class="col-lg-9">
+        <div class="card glass-card mb-4">
+            <div class="card-header bg-primary text-white rounded-top-3">
+                <h3 class="mb-0"><i class="bi bi-journal-text me-2"></i> {{ lesson.title }}</h3>
+            </div>
+            <div class="card-body">
+                <!-- Konten Pelajaran (Gunakan filter safe jika konten mengandung HTML) -->
+                <div class="lesson-content p-3 border rounded-3 bg-light">
+                    {{ lesson.content | safe }}
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Tombol Selesai -->
+                {% if not is_completed %}
+                <a href="{{ url_for('complete_lesson', lesson_id=lesson.id) }}" class="btn btn-success btn-lg w-100">
+                    <i class="bi bi-check-circle-fill me-2"></i> Tandai Selesai dan Lanjut
+                </a>
+                {% else %}
+                <button class="btn btn-outline-success btn-lg w-100" disabled>
+                    <i class="bi bi-check-circle-fill me-2"></i> Pelajaran Ini Sudah Selesai
+                </button>
+                {% endif %}
+                
+                <!-- Navigasi Pelajaran -->
+                <div class="d-flex justify-content-between mt-3">
+                    {% if prev_lesson %}
+                    <a href="{{ url_for('lesson_view', lesson_id=prev_lesson.id) }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left-circle-fill me-1"></i> Sebelumnya
+                    </a>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
+                    
+                    {% if next_lesson %}
+                    <a href="{{ url_for('lesson_view', lesson_id=next_lesson.id) }}" class="btn btn-primary">
+                        Selanjutnya <i class="bi bi-arrow-right-circle-fill ms-1"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Kolom Kanan: Daftar Pelajaran (Sidebar) -->
+    <div class="col-lg-3">
+        <div class="card glass-card sticky-top" style="top: 6rem;">
+            <div class="card-header bg-light rounded-top-3">
+                <h6 class="mb-0 fw-bold"><i class="bi bi-list-task me-2"></i> Daftar Pelajaran</h6>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for l in lesson.course.lessons.order_by(Lesson.order).all() %}
+                {% set progress = l.progresses.filter_by(user_id=current_user.id).first() %}
+                <a href="{{ url_for('lesson_view', lesson_id=l.id) }}" class="list-group-item list-group-item-action {% if l.id == lesson.id %}active{% endif %}">
+                    <i class="bi bi-book me-2"></i>
+                    {{ l.title }}
+                    {% if progress and progress.is_completed %}
+                    <span class="badge bg-success float-end"><i class="bi bi-check"></i></span>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

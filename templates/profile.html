@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary"><i class="bi bi-person-circle me-2"></i> Profil Saya</h1>
+
+<div class="row g-4">
+    <!-- Kolom Kiri: Edit Profil -->
+    <div class="col-lg-6">
+        <div class="card glass-card p-4">
+            <h3 class="mb-3 text-secondary border-bottom pb-2">Informasi Akun</h3>
+            
+            <form method="POST" action="{{ url_for('profile') }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    {{ form.full_name.label(class="form-label") }}
+                    {{ form.full_name(class="form-control") }}
+                    <div class="form-text text-muted">Nama ini akan digunakan pada sertifikat Anda.</div>
+                    {% for error in form.full_name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.whatsapp_number.label(class="form-label") }}
+                    {{ form.whatsapp_number(class="form-control") }}
+                    <div class="form-text text-muted">Digunakan untuk notifikasi dan dukungan.</div>
+                    {% for error in form.whatsapp_number.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control") }}
+                    {% for error in form.email.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" value="{{ current_user.username }}" disabled>
+                </div>
+                
+                {{ form.submit(class="btn btn-primary w-100") }}
+            </form>
+        </div>
+    </div>
+    
+    <!-- Kolom Kanan: Sertifikat -->
+    <div class="col-lg-6">
+        <div class="card glass-card p-4">
+            <h3 class="mb-3 text-secondary border-bottom pb-2"><i class="bi bi-award-fill me-2"></i> Sertifikat Saya</h3>
+            
+            {% if completed_courses %}
+                <div class="list-group">
+                    {% for course in completed_courses %}
+                    {% set enrollment = current_user.enrollments.filter_by(course_id=course.id).first() %}
+                    
+                    <div class="list-group-item glass-card mb-2 rounded-3 d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-success">{{ course.title }}</span>
+                        
+                        <!-- LINK UNDUH BARU -->
+                        <a href="{{ url_for('user_certificate_download', enrollment_id=enrollment.id) }}" 
+                           target="_blank" 
+                           class="btn btn-sm btn-success" 
+                           title="Unduh Sertifikat">
+                            <i class="bi bi-download me-1"></i> Unduh
+                        </a>
+                        <!-- END LINK UNDUH BARU -->
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center" role="alert">
+                    Anda belum menyelesaikan kursus apapun. Selesaikan kursus untuk mendapatkan sertifikat!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

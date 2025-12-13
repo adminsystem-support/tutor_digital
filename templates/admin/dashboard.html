@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</h1>
+
+<div class="row g-4 mb-5">
+    <!-- Kartu Statistik: Total Pengguna -->
+    <div class="col-md-4">
+        <div class="card glass-card h-100 border-start border-primary border-5">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="bi bi-people-fill text-primary" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <div class="col">
+                        <div class="text-uppercase text-muted small fw-bold">Total Pengguna</div>
+                        <div class="h4 mb-0 fw-bold">{{ total_users }}</div>
+                        <a href="{{ url_for('admin_users') }}" class="text-primary small">Lihat Detail &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kartu Statistik: Total Kursus -->
+    <div class="col-md-4">
+        <div class="card glass-card h-100 border-start border-success border-5">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="bi bi-book-fill text-success" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <div class="col">
+                        <div class="text-uppercase text-muted small fw-bold">Total Kursus</div>
+                        <div class="h4 mb-0 fw-bold">{{ total_courses }}</div>
+                        <a href="{{ url_for('admin_courses') }}" class="text-success small">Kelola Kursus &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kartu Statistik: Total Pendaftaran -->
+    <div class="col-md-4">
+        <div class="card glass-card h-100 border-start border-warning border-5">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <i class="bi bi-person-check-fill text-warning" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <div class="col">
+                        <div class="text-uppercase text-muted small fw-bold">Total Pendaftaran</div>
+                        <div class="h4 mb-0 fw-bold">{{ total_enrollments }}</div>
+                        <span class="text-muted small">Data Akumulatif</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card glass-card p-4">
+    <h3 class="mb-3 text-secondary"><i class="bi bi-tools me-2"></i> Menu Administrasi Cepat</h3>
+    <div class="list-group list-group-flush">
+        <a href="{{ url_for('admin_users') }}" class="list-group-item list-group-item-action glass-card mb-2 rounded-3">
+            <i class="bi bi-person-lines-fill me-2"></i> Manajemen Pengguna
+        </a>
+        <a href="{{ url_for('admin_courses') }}" class="list-group-item list-group-item-action glass-card mb-2 rounded-3">
+            <i class="bi bi-journal-bookmark-fill me-2"></i> Kelola Kursus
+        </a>
+        <a href="{{ url_for('add_course') }}" class="list-group-item list-group-item-action glass-card mb-2 rounded-3">
+            <i class="bi bi-plus-circle-fill me-2"></i> Tambah Kursus Baru
+        </a>
+        
+        <!-- LINK: Konfirmasi Pembayaran -->
+        <a href="{{ url_for('admin_enrollments') }}" class="list-group-item list-group-item-action glass-card mb-2 rounded-3">
+            <i class="bi bi-cash-coin me-2"></i> Konfirmasi Pembayaran & Pendaftaran
+            {% set pending_count = Enrollment.query.filter_by(is_paid=True, is_confirmed=False).count() %}
+            {% if pending_count > 0 %}
+                <span class="badge bg-danger float-end">{{ pending_count }} Pending</span>
+            {% endif %}
+        </a>
+        
+        <!-- LINK BARU: Manajemen Sertifikat -->
+        <a href="{{ url_for('admin_certificates') }}" class="list-group-item list-group-item-action glass-card mb-2 rounded-3">
+            <i class="bi bi-award-fill me-2"></i> Manajemen Sertifikat
+        </a>
+        <!-- END LINK BARU -->
+    </div>
+</div>
+
+{% endblock %}

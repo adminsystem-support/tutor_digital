@@ -1,0 +1,60 @@
+<!-- File: D:\jago_kursus\templates\_course_card.html -->
+<div class="card course-card border-0 shadow-lg h-100 hover-scale" style="border-radius: 15px; overflow: hidden;">
+    
+    <!-- Gambar Kursus -->
+    <div class="position-relative">
+        <img src="{{ course.image_url }}" class="card-img-top" alt="{{ course.title }}" style="height: 150px; object-fit: cover;">
+        
+        <!-- Badge Kategori (Menggunakan warna default Bootstrap yang akan di-override oleh CSS Anda) -->
+        {% set category_color = 'secondary' %}
+        {% if course.category == 'Web Dev' %}{% set category_color = 'primary' %}
+        {% elif course.category == 'Data Science' %}{% set category_color = 'success' %}
+        {% elif course.category == 'Desain Grafis' %}{% set category_color = 'danger' %}
+        {% elif course.category == 'Jaringan' %}{% set category_color = 'info' %}
+        {% elif course.category == 'Office' %}{% set category_color = 'warning' %}
+        {% endif %}
+        
+        <!-- Menggunakan kelas 'course-badge' untuk styling Glassmorphism -->
+        <span class="course-badge position-absolute top-0 start-0 m-2 fw-bold bg-{{ category_color }}">
+            {{ course.category }}
+        </span>
+        
+        <!-- Badge Rating -->
+        <span class="course-badge position-absolute top-0 end-0 m-2 bg-dark">
+            <i class="bi bi-star-fill text-warning me-1" style="color: #C39797 !important;"></i> {{ course.rating }}
+        </span>
+    </div>
+
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title fw-bolder text-truncate mb-1 course-title">{{ course.title }}</h5>
+        <p class="card-text text-muted small mb-3">Oleh: {{ course.instructor_name }}</p>
+        
+        <!-- Harga dan Diskon -->
+        <div class="mt-auto">
+            {% if course.discount_percent > 0 %}
+                <span class="discount-badge fw-bold me-2">DISKON {{ course.discount_percent }}%</span>
+                <div class="d-flex align-items-center mt-2">
+                    <span class="text-decoration-line-through text-muted me-2 small original-price">Rp {{ course.price|format_rupiah }}</span>
+                    <!-- Menggunakan kelas final-price (Rose Gold) -->
+                    <h4 class="fw-bolder mb-0 final-price">Rp {{ course.final_price|format_rupiah }}</h4>
+                </div>
+            {% else %}
+                <h4 class="fw-bolder mb-0 final-price">
+                    {% if course.price == 0 %}
+                        GRATIS
+                    {% else %}
+                        Rp {{ course.price|format_rupiah }}
+                    {% endif %}
+                </h4>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Tombol Aksi -->
+    <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+        <!-- Menggunakan btn-primary (Rose Gold) -->
+        <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary w-100 fw-bold">
+            Lihat Detail <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

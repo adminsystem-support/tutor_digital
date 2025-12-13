@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-secondary btn-sm mb-3">← Kembali ke Detail Kursus</a>
+            <h1 class="text-center mb-4">{{ title }}</h1>
+            
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control", placeholder="Judul Pelajaran") }}
+                    {% for error in form.title.errors %}
+                    <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.order.label(class="form-label") }}
+                    {{ form.order(class="form-control", placeholder="Urutan (misal: 1, 2, 3)") }}
+                    {% for error in form.order.errors %}
+                    <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.content.label(class="form-label") }}
+                    {{ form.content(class="form-control", rows=10, placeholder="Isi konten pelajaran (teks, link video, dll.)") }}
+                    {% for error in form.content.errors %}
+                    <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                
+                <p>{{ form.submit(class="btn btn-success w-100 mt-3") }}</p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

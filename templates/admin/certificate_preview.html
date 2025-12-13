@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sertifikat - {{ data.course_title }}</title>
+    <!-- Bootstrap CSS CDN (untuk styling dasar) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- CSS KHUSUS UNTUK SERTIFIKAT -->
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #f8f9fa;
+            padding: 0;
+            margin: 0;
+        }
+        .certificate-container {
+            width: 297mm; /* Ukuran A4 Landscape */
+            height: 210mm;
+            margin: 20px auto;
+            border: 10px solid #007bff; /* Border Biru Primer */
+            padding: 30px;
+            background: #ffffff url('https://via.placeholder.com/297x210.png?text=Background+Sertifikat') no-repeat center center;
+            background-size: cover;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .certificate-title {
+            font-size: 48pt;
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .certificate-subtitle {
+            font-size: 18pt;
+            color: #333;
+        }
+        .certificate-body {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .recipient-name {
+            font-size: 36pt;
+            font-family: 'Brush Script MT', cursive; /* Font yang lebih artistik */
+            color: #dc3545; /* Warna Merah/Aksen */
+            border-bottom: 2px solid #dc3545;
+            display: inline-block;
+            padding: 0 20px;
+            margin: 10px 0;
+        }
+        .course-info {
+            font-size: 20pt;
+            color: #333;
+            margin-top: 20px;
+        }
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 12pt;
+        }
+        .signature-block {
+            text-align: center;
+            width: 30%;
+        }
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 50px;
+            padding-top: 5px;
+            font-weight: bold;
+        }
+        .certificate-id {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            font-size: 10pt;
+            color: #6c757d;
+        }
+
+        /* Media Print untuk menghilangkan elemen non-cetak */
+        @media print {
+            body {
+                background-color: white;
+            }
+            .certificate-container {
+                margin: 0;
+                border: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="certificate-container">
+    <div class="certificate-header">
+        <div class="certificate-subtitle">Diberikan oleh Jago Komputer kepada</div>
+        <div class="certificate-title">SERTIFIKAT PENGHARGAAN</div>
+    </div>
+
+    <div class="certificate-body">
+        <p style="font-size: 16pt; color: #555;">Dengan bangga diberikan kepada:</p>
+        <div class="recipient-name">{{ data.full_name }}</div>
+        <div class="course-info">
+            Atas keberhasilan menyelesaikan kursus online
+            <br>
+            **"{{ data.course_title }}"**
+            <br>
+            pada tanggal {{ data.completion_date }}.
+        </div>
+    </div>
+
+    <div class="certificate-footer">
+        <div class="signature-block">
+            <div class="signature-line">
+                [Nama CEO/Direktur]
+                <br>
+                CEO Jago Komputer
+            </div>
+        </div>
+        <div class="signature-block">
+            <div class="signature-line">
+                [Nama Instruktur Utama]
+                <br>
+                Instruktur Utama
+            </div>
+        </div>
+    </div>
+    
+    <div class="certificate-id">
+        ID Sertifikat: {{ data.certificate_id }}
+    </div>
+</div>
+
+</body>
+</html>

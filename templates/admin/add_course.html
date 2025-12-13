@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary"><i class="bi bi-plus-circle-fill me-2"></i> Tambah Kursus Baru</h1>
+
+<div class="card glass-card p-4">
+    <form method="POST" action="{{ url_for('add_course') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="row g-3">
+            <!-- Kolom Kiri: Info Dasar -->
+            <div class="col-md-6">
+                <h5 class="text-secondary border-bottom pb-2 mb-3">Informasi Dasar</h5>
+                
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control") }}
+                    {% for error in form.title.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", rows=5) }}
+                    {% for error in form.description.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- FIELD KATEGORI -->
+                <div class="mb-3">
+                    {{ form.category.label(class="form-label") }}
+                    {{ form.category(class="form-select") }} 
+                    {% for error in form.category.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <!-- END FIELD KATEGORI -->
+                
+                <h5 class="text-secondary border-bottom pb-2 mb-3 mt-4">Media & Harga</h5>
+                
+                <div class="mb-3">
+                    {{ form.image_url.label(class="form-label") }}
+                    {{ form.image_url(class="form-control") }}
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.price.label(class="form-label") }}
+                        {{ form.price(class="form-control") }}
+                        {% for error in form.price.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.discount_percent.label(class="form-label") }}
+                        {{ form.discount_percent(class="form-control") }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kolom Kanan: Info Instruktur -->
+            <div class="col-md-6">
+                <h5 class="text-secondary border-bottom pb-2 mb-3">Informasi Instruktur</h5>
+                
+                <div class="mb-3">
+                    {{ form.instructor_name.label(class="form-label") }}
+                    {{ form.instructor_name(class="form-control") }}
+                    {% for error in form.instructor_name.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.instructor_title.label(class="form-label") }}
+                    {{ form.instructor_title(class="form-control") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.instructor_image_url.label(class="form-label") }}
+                    {{ form.instructor_image_url(class="form-control") }}
+                </div>
+                
+                <div class="mb-3">
+                    {{ form.rating.label(class="form-label") }}
+                    {{ form.rating(class="form-control") }}
+                    {% for error in form.rating.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <hr class="my-4">
+        
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('admin_courses') }}" class="btn btn-outline-secondary">Batal</a>
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

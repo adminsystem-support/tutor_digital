@@ -1,0 +1,189 @@
+<!-- templates/_search_bar.html -->
+<div class="container search-container">
+    <form action="{{ url_for('search') }}" method="GET" id="searchForm">
+        <div class="search-bar d-flex align-items-center glass-card">
+            <i class="bi bi-search me-3 text-muted" style="font-size: 1.5rem;"></i>
+            <!-- Isi input q dengan nilai query saat ini -->
+            <input type="text" name="q" id="searchInput" class="form-control form-control-lg border-0 bg-transparent" placeholder="Coba cari materi belajarmu di sini" value="{{ query|default('') }}">
+            
+            <!-- Input tersembunyi untuk menyimpan nilai kelas yang dipilih -->
+            <input type="hidden" name="kelas" id="kelasInput" value="{{ selected_kelas|default('') }}">
+
+            <!-- Tombol Modal Pilih Kelas (Teks akan diubah oleh JS) -->
+            <button type="button" class="btn btn-outline-warning ms-3 fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="#kelasModal" id="kelasButton">
+                Pilih Kelas <i class="bi bi-chevron-down ms-1"></i>
+            </button>
+            
+            <!-- Tombol Submit Tersembunyi (untuk Enter) -->
+            <button type="submit" class="d-none"></button>
+        </div>
+    </form>
+</div>
+
+<!-- MODAL PILIH KELAS -->
+<div class="modal fade" id="kelasModal" tabindex="-1" aria-labelledby="kelasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content"> 
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold" id="kelasModalLabel">Pilih Kelas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="fw-bold mb-3">Pilih Kelas</h6>
+                <div class="d-flex flex-wrap gap-2 mb-4" id="kelasOptions">
+                    {% set available_kelas = ['Kelas 10 SMK', 'Kelas 11 SMK', 'Kelas 12 SMK'] %}
+                    {% for k in available_kelas %}
+                    <button type="button" class="btn btn-outline-secondary btn-filter-option btn-kelas" data-kelas="{{ k }}">{{ k }}</button>
+                    {% endfor %}
+                    <button type="button" class="btn btn-outline-secondary btn-filter-option btn-kelas" data-kelas="Mahasiswa/Umum">Mahasiswa/Umum</button>
+                </div>
+
+                <h6 class="fw-bold mb-3">Pilih Jurusan (Simulasi)</h6>
+                <div class="d-flex flex-wrap gap-2" id="jurusanOptions">
+                    {% set available_jurusan = ['Akuntansi dan Keuangan Lembaga', 'Bisnis Daring dan Pemasaran', 'Multimedia', 'Otomatisasi dan Tata Kelola Perkantoran', 'Teknik Komputer dan Jaringan', 'Umum'] %}
+                    {% for j in available_jurusan %}
+                    <button type="button" class="btn btn-outline-secondary btn-filter-option btn-jurusan" data-jurusan="{{ j }}">{{ j }}</button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="applyKelasFilter">Terapkan Filter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPT JAVASCRIPT UNTUK MODAL DAN PERSISTENSI -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const kelasInput = document.getElementById('kelasInput');
+        const kelasButton = document.getElementById('kelasButton');
+        const searchForm = document.getElementById('searchForm');
+        const applyButton = document.getElementById('applyKelasFilter');
+        const kelasButtons = document.querySelectorAll('.btn-kelas');
+        const jurusanButtons = document.querySelectorAll('.btn-jurusan');
+        const kelasModal = document.getElementById('kelasModal');
+        
+        let selectedKelas = '';
+        let selectedJurusan = '';
+
+        // --- FUNGSI UTAMA ---
+
+        function updateKelasButtonText(filterValue) {
+            if (filterValue) {
+                // Tampilkan hanya bagian kelas/jurusan yang relevan
+                let displayValue = filterValue.split(' - ')[0]; 
+                if (filterValue.includes(' - ')) {
+                    displayValue = filterValue.split(' - ').join(' / ');
+                } else {
+                    displayValue = filterValue;
+                }
+
+                kelasButton.innerHTML = `${displayValue} <i class="bi bi-chevron-down ms-1"></i>`;
+                kelasButton.classList.remove('btn-outline-warning');
+                kelasButton.classList.add('btn-warning');
+            } else {
+                kelasButton.innerHTML = `Pilih Kelas <i class="bi bi-chevron-down ms-1"></i>`;
+                kelasButton.classList.remove('btn-warning');
+                kelasButton.classList.add('btn-outline-warning');
+            }
+        }
+
+        function resetAndMarkButton(buttons, value, dataAttr) {
+            buttons.forEach(b => {
+                b.classList.remove('btn-primary');
+                b.classList.add('btn-outline-secondary');
+                if (b.getAttribute(dataAttr) === value) {
+                    b.classList.remove('btn-outline-secondary');
+                    b.classList.add('btn-primary');
+                }
+            });
+        }
+
+        // --- INISIALISASI (Memuat nilai dari hidden input) ---
+        const initialFilter = kelasInput.value;
+        updateKelasButtonText(initialFilter);
+
+        // --- LOGIKA MODAL ---
+
+        // Event saat modal dibuka
+        kelasModal.addEventListener('show.bs.modal', function () {
+            // Reset nilai lokal saat modal dibuka
+            selectedKelas = '';
+            selectedJurusan = '';
+
+            // Ambil nilai dari tombol yang sedang aktif
+            const currentFilter = kelasInput.value;
+            
+            // Pisahkan Kelas dan Jurusan dari filter saat ini
+            let parts = currentFilter.split(' - ');
+            let currentKelas = parts[0];
+            let currentJurusan = parts.length > 1 ? parts[1] : '';
+
+            // Tandai tombol yang sesuai
+            resetAndMarkButton(kelasButtons, currentKelas, 'data-kelas');
+            resetAndMarkButton(jurusanButtons, currentJurusan, 'data-jurusan');
+            
+            // Set nilai lokal untuk tombol yang sudah ditandai
+            selectedKelas = currentKelas;
+            selectedJurusan = currentJurusan;
+        });
+
+        // Event Listener untuk tombol Kelas
+        kelasButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Reset semua tombol kelas
+                kelasButtons.forEach(b => {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-outline-secondary');
+                });
+                
+                // Tandai tombol yang diklik
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-primary');
+                selectedKelas = this.getAttribute('data-kelas');
+            });
+        });
+
+        // Event Listener untuk tombol Jurusan
+        jurusanButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Reset semua tombol jurusan
+                jurusanButtons.forEach(b => {
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-outline-secondary');
+                });
+                
+                // Tandai tombol yang diklik
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-primary');
+                selectedJurusan = this.getAttribute('data-jurusan');
+            });
+        });
+
+        // Terapkan Filter dan Submit Form
+        applyButton.addEventListener('click', function() {
+            let finalFilter = selectedKelas;
+            
+            // Logika penggabungan filter
+            if (selectedJurusan && selectedKelas) {
+                finalFilter = `${selectedKelas} - ${selectedJurusan}`;
+            } else if (selectedJurusan) {
+                finalFilter = selectedJurusan;
+            } else if (!selectedKelas && !selectedJurusan) {
+                finalFilter = ''; // Hapus filter jika tidak ada yang dipilih
+            }
+            
+            kelasInput.value = finalFilter;
+            updateKelasButtonText(finalFilter); // Update teks tombol utama
+
+            // Tutup modal
+            const modal = bootstrap.Modal.getInstance(kelasModal);
+            modal.hide();
+            
+            // Submit form pencarian
+            searchForm.submit();
+        });
+    });
+</script>

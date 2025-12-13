@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Menggunakan d-flex, justify-content-center, dan align-items-center untuk memposisikan di tengah layar -->
+<!-- vh-100 memastikan elemen mengambil tinggi penuh viewport -->
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+        <!-- Formulir akan menggunakan styling Glassmorphism dari CSS: .container form -->
+        <!-- Hapus kelas 'shadow-lg' di sini karena sudah ada di CSS .card -->
+        <form action="" method="post" novalidate class="card p-4 p-md-5">
+            {{ form.hidden_tag() }}
+            
+            <!-- Judul menggunakan warna aksen Rose Gold -->
+            <h2 class="text-center fw-bolder mb-2" style="color: #C39797 !important;">Masuk ke Akun Anda</h2>
+            <p class="text-center text-muted mb-4">Akses dashboard dan semua kursus premium Anda.</p>
+
+            <!-- Input Fields (Akan di-style oleh .form-control di CSS Anda) -->
+            <div class="mb-3">
+                {{ form.username.label(class="form-label fw-bold") }}
+                {{ form.username(class="form-control form-control-lg", placeholder="Masukkan Username Anda") }}
+                {% for error in form.username.errors %}
+                <span class="text-danger small">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="form-label fw-bold") }}
+                {{ form.password(class="form-control form-control-lg", placeholder="Masukkan Kata Sandi") }}
+                {% for error in form.password.errors %}
+                <span class="text-danger small">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Remember Me Checkbox -->
+            <div class="mb-4 form-check">
+                {{ form.remember_me(class="form-check-input") }}
+                {{ form.remember_me.label(class="form-check-label text-muted") }}
+            </div>
+
+            <!-- Submit Button (Menggunakan btn-primary Rose Gold) -->
+            {{ form.submit(class="btn btn-primary btn-lg w-100 mb-3") }}
+
+            <!-- Link Daftar -->
+            <div class="text-center mt-3">
+                <p class="text-muted mb-0">Belum punya akun? <a href="{{ url_for('register') }}" class="text-primary fw-bold text-decoration-none" style="color: #C39797 !important;">Daftar di sini!</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary"><i class="bi bi-cash-coin me-2"></i> Manajemen Pendaftaran</h1>
+
+<div class="card glass-card p-4 mb-5">
+    <h3 class="mb-3 text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Pembayaran Menunggu Konfirmasi ({{ pending_enrollments|length }})</h3>
+    
+    {% if pending_enrollments %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Pengguna</th>
+                    <th scope="col">Kursus</th>
+                    <th scope="col">Nominal Bayar</th>
+                    <th scope="col">Waktu Bayar</th>
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pending_enrollments %}
+                {% set enrollment = item.enrollment %}
+                <tr>
+                    <th scope="row">{{ enrollment.id }}</th>
+                    <td>{{ enrollment.student.username }}</td>
+                    <td>{{ enrollment.course.title }}</td>
+                    
+                    <!-- TAMPILKAN NOMINAL BAYAR -->
+                    <td class="fw-bold text-success">Rp {{ item.final_price|format_rupiah }}</td> 
+                    
+                    <!-- TAMPILKAN WAKTU DENGAN PENYESUAIAN TIMEZONE -->
+                    <td>{{ (enrollment.timestamp | adjust_timezone).strftime('%d %b %Y, %H:%M') }}</td> 
+                    
+                    <td>
+                        <!-- UBAH TOMBOL INI MENJADI LIHAT DETAIL -->
+                        <a href="{{ url_for('admin_enrollment_detail', enrollment_id=enrollment.id) }}" 
+                           class="btn btn-sm btn-info">
+                            <i class="bi bi-eye-fill me-1"></i> Lihat Detail
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-success text-center" role="alert">
+        Tidak ada pembayaran yang menunggu konfirmasi.
+    </div>
+    {% endif %}
+</div>
+
+<div class="card glass-card p-4">
+    <h3 class="mb-3 text-secondary"><i class="bi bi-list-ul me-2"></i> Semua Data Pendaftaran ({{ all_enrollments|length }})</h3>
+    <p class="text-muted">Total pendaftaran yang tercatat: **{{ all_enrollments|length }}**</p>
+</div>
+
+{% endblock %}

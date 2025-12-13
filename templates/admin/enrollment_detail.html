@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary"><i class="bi bi-file-earmark-text me-2"></i> Detail Pendaftaran</h1>
+
+<div class="row g-4">
+    <!-- Kolom Kiri: Ringkasan dan Bukti Bayar -->
+    <div class="col-lg-7">
+        <div class="card glass-card p-4 mb-4">
+            <h3 class="mb-3 text-secondary border-bottom pb-2">Ringkasan Pesanan</h3>
+            
+            <table class="table table-borderless">
+                <tr>
+                    <td class="fw-bold">Pengguna</td>
+                    <td>: {{ enrollment.student.username }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Kursus</td>
+                    <td>: {{ enrollment.course.title }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Waktu Konfirmasi</td>
+                    <td>: {{ (enrollment.timestamp | adjust_timezone).strftime('%d %b %Y, %H:%M') }}</td>
+                </tr>
+                
+                <!-- BARIS BARU: NOMINAL DIHARAPKAN (Tanpa Kode Unik) -->
+                <tr>
+                    <td class="fw-bold">Nominal Kursus</td>
+                    <td>: Rp {{ expected_price|format_rupiah }}</td>
+                </tr>
+                
+                <!-- BARIS BARU: KODE UNIK -->
+                <tr>
+                    <td class="fw-bold text-info">Kode Unik</td>
+                    <td class="fw-bold text-info">: {{ enrollment.unique_code }}</td>
+                </tr>
+                
+                <!-- BARIS BARU: TOTAL YANG DIBAYAR -->
+                <tr>
+                    <td class="fw-bold text-success">Nominal Dibayar</td>
+                    <td class="fw-bold text-success">: Rp {{ paid_price|format_rupiah }}</td>
+                </tr>
+                
+                <tr>
+                    <td class="fw-bold">Metode Pembayaran</td>
+                    <td>: {{ enrollment.payment_method }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="card glass-card p-4">
+            <h3 class="mb-3 text-secondary border-bottom pb-2">Bukti Pembayaran</h3>
+            
+            {% if enrollment.proof_of_payment %}
+                <p class="text-muted small">Nama File: {{ enrollment.proof_of_payment }}</p>
+                {% set file_extension = enrollment.proof_of_payment.rsplit('.', 1)[1].lower() %}
+                
+                {% if file_extension in ['png', 'jpg', 'jpeg'] %}
+                    <img src="{{ url_for('static', filename='proofs/' + enrollment.proof_of_payment) }}" 
+                         class="img-fluid rounded-3 shadow-sm" 
+                         alt="Bukti Pembayaran" 
+                         style="max-height: 500px; object-fit: contain;">
+                {% elif file_extension == 'pdf' %}
+                    <div class="alert alert-warning text-center" role="alert">
+                        <i class="bi bi-file-earmark-pdf-fill me-2" style="font-size: 2rem;"></i>
+                        <p class="mb-0">File Bukti Pembayaran adalah PDF. <a href="{{ url_for('static', filename='proofs/' + enrollment.proof_of_payment) }}" target="_blank" class="alert-link">Klik di sini untuk melihat/mengunduh.</a></p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        Bukti pembayaran tidak ditemukan atau format tidak didukung.
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    Pengguna belum mengunggah bukti pembayaran.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Kolom Kanan: Aksi Admin -->
+    <div class="col-lg-5">
+        <div class="card glass-card p-4 sticky-top" style="top: 6rem;">
+            <h3 class="mb-3 text-danger border-bottom pb-2">Aksi Verifikasi</h3>
+            
+            {% if enrollment.is_confirmed %}
+                <div class="alert alert-success text-center fw-bold" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> SUDAH DIKONFIRMASI
+                </div>
+            {% elif enrollment.is_paid %}
+                <p class="text-muted">Setelah memverifikasi bukti pembayaran dan nominal, klik tombol di bawah untuk memberikan akses penuh.</p>
+                <a href="{{ url_for('admin_confirm_enrollment', enrollment_id=enrollment.id) }}" 
+                   class="btn btn-success btn-lg w-100 mb-3" 
+                   onclick="return confirm('Yakin ingin mengkonfirmasi pembayaran ini? Akses kursus akan terbuka.')">
+                    <i class="bi bi-check-circle-fill me-1"></i> Konfirmasi Pembayaran
+                </a>
+                <a href="#" class="btn btn-outline-danger w-100">
+                    <i class="bi bi-x-circle-fill me-1"></i> Tolak & Hubungi Pengguna
+                </a>
+            {% else %}
+                <div class="alert alert-secondary text-center" role="alert">
+                    Pembayaran belum ditandai sebagai sudah dibayar oleh pengguna.
+                </div>
+            {% endif %}
+            
+            <hr class="my-3">
+            <a href="{{ url_for('admin_enrollments') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Pendaftaran</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

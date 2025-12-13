@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-primary"><i class="bi bi-award-fill me-2"></i> Manajemen Sertifikat</h1>
+
+<div class="card glass-card p-4">
+    <h3 class="mb-3 text-secondary border-bottom pb-2">Sertifikat Siap Cetak ({{ certificate_data|length }})</h3>
+    
+    {% if certificate_data %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nama Lengkap</th>
+                    <th scope="col">Kursus</th>
+                    <th scope="col">Progres</th>
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in certificate_data %}
+                <tr>
+                    <th scope="row">{{ item.enrollment.id }}</th>
+                    <td>
+                        <!-- Tampilkan Nama Lengkap jika ada, jika tidak, gunakan Username -->
+                        <span class="fw-bold">{{ item.user.full_name or item.user.username }}</span>
+                        <br><small class="text-muted">{{ item.user.email }}</small>
+                    </td>
+                    <td>{{ item.course.title }}</td>
+                    <td>
+                        <span class="badge bg-success">100% Selesai</span>
+                    </td>
+                    <td>
+                        <!-- LINK CETAK: Mengarah ke route preview baru -->
+                        <a href="{{ url_for('certificate_preview', enrollment_id=item.enrollment.id) }}" 
+                           target="_blank" 
+                           class="btn btn-sm btn-primary me-2" 
+                           title="Cetak Sertifikat">
+                            <i class="bi bi-printer-fill"></i> Cetak
+                        </a>
+                        <!-- LINK WA: Menggunakan nomor WA yang baru ditambahkan -->
+                        <a href="https://wa.me/{{ item.user.whatsapp_number }}" 
+                           target="_blank" 
+                           class="btn btn-sm btn-success" 
+                           title="Hubungi via WhatsApp">
+                            <i class="bi bi-whatsapp"></i> WA
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        Belum ada pengguna yang menyelesaikan kursus (100% Progres) yang terkonfirmasi.
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
