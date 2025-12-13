@@ -1,18 +1,20 @@
 import os
 
+# Mendapatkan path absolut dari direktori saat ini
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
+    # Kunci rahasia untuk keamanan sesi dan formulir
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'ganti-dengan-kunci-rahasia-yang-sulit'
     
-    # --- KONFIGURASI DATABASE POSTGRESQL ---
-    # Format: postgresql://user:password@host:port/database_name
-    # Ganti 'user', 'password', dan 'database_name' dengan yang Anda buat saat instalasi.
-    # Contoh: postgresql://postgres:kata_sandi_anda@localhost:5432/db_aplikasi_web
-    
-    # URI DATABASE YANG SUDAH DIUPDATE:
+    # --- KONFIGURASI DATABASE SQLITE (UNTUK PYTHONANYWHERE) ---
+    # Jika variabel lingkungan DATABASE_URL tidak ada, gunakan SQLite lokal
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'postgresql://postgres:Triniti%402025@localhost:5432/jago_kursus'
+        'sqlite:///' + os.path.join(basedir, 'app.db')
+        
+    # Catatan: Jika Anda ingin kembali ke PostgreSQL, gunakan format ini:
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    #     'postgresql://postgres:Triniti%402025@localhost:5432/jago_kursus'
         
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
