@@ -1,69 +1,77 @@
-/* --- PALET WARNA SOFT DARK ELEGANCE --- */
-/* Background: Dark Slate Blue (#2C3E50) */
-/* Accent: Soft Rose Gold/Copper (#D4AF37) */
-/* Primary/Text: #f0f0f0 */
+/* --- PALET WARNA SOFT PASTEL WARMTH --- */
+/* Background: Soft Beige (#F5F5DC) */
+/* Accent: Soft Terracotta (#E9967A) */
+/* Secondary/Dark: Dark Slate (#465A6B) */
 
-/* --- 1. BACKGROUND KESELURUHAN (Soft Dark Elegance) --- */
+/* --- 1. BACKGROUND KESELURUHAN (Soft Pastel Warmth) --- */
 body {
-    /* Gradien dari Dark Gray ke Dark Slate Blue */
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); 
+    /* Latar belakang hangat dan cerah */
+    background-color: #F5F5DC; 
     min-height: 100vh;
     font-family: 'Poppins', sans-serif; 
-    color: #f0f0f0; 
+    color: #465A6B; /* Teks utama menjadi Dark Slate */
 }
 
 /* Mengubah warna teks default untuk elemen tertentu */
 h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
-    color: #f0f0f0 !important;
+    color: #465A6B !important; /* Teks gelap di latar terang */
 }
 
 /* Perbaikan Kontras: Teks Kecil yang Sulit Dibaca */
 .text-muted {
-    color: #b0b0b0 !important; /* Abu-abu terang */
+    color: #888888 !important; /* Abu-abu lembut */
 }
 
-/* --- 2. NAVBAR (Glassmorphism Gelap Soft) --- */
+/* --- 2. NAVBAR (Soft White / Light Glassmorphism) --- */
 .navbar {
-    /* Background gelap transparan yang lebih lembut */
-    background-color: rgba(44, 62, 80, 0.85) !important; 
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2); /* Shadow lebih lembut */
-    backdrop-filter: blur(8px); /* Blur lebih rendah */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* Background terang transparan */
+    background-color: rgba(255, 255, 255, 0.9) !important; 
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); 
+    backdrop-filter: blur(5px); 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     z-index: 1000;
 }
 
-/* Mengubah warna link di navbar agar terlihat */
+/* Mengubah warna link di navbar agar terlihat (Dark Slate) */
+.navbar-dark .navbar-nav .nav-link {
+    color: #465A6B !important; /* Teks gelap */
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #E9967A !important; /* Aksen Terracotta saat hover */
+}
+/* Perlu ubah navbar-dark menjadi navbar-light di base.html */
 .navbar-light .navbar-nav .nav-link {
-    color: #f0f0f0 !important;
+    color: #465A6B !important;
 }
 .navbar-light .navbar-nav .nav-link:hover {
-    color: #D4AF37 !important; /* Aksen Soft Gold saat hover */
+    color: #E9967A !important;
 }
+
 
 /* --- 3. EFEK GLASSMORPHISM PADA KARTU (Card) --- */
 .card {
-    /* Background Glassmorphism Gelap Soft */
-    background: rgba(52, 73, 94, 0.5); 
+    /* Background Glassmorphism Terang */
+    background: rgba(255, 255, 255, 0.8); 
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px);
     
     /* Border dan Shadow */
     border-radius: 15px; 
-    border: 1px solid rgba(255, 255, 255, 0.1); 
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.3); 
+    border: 1px solid rgba(0, 0, 0, 0.05); 
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1); 
     
-    color: #f0f0f0;
+    color: #465A6B; /* Teks gelap */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s;
 }
 
 .card:hover {
     transform: translateY(-3px); 
-    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Pastikan judul dan teks di dalam kartu juga terang */
+/* Pastikan judul dan teks di dalam kartu juga gelap */
 .card-title, .card-text {
-    color: #f0f0f0 !important;
+    color: #465A6B !important;
 }
 
 /* --- 4. EFEK GLASSMORPHISM PADA FORMULIR (Login/Register) --- */
@@ -72,34 +80,34 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     margin: 50px auto;
     padding: 35px;
     
-    /* Glassmorphism Style */
-    background: rgba(52, 73, 94, 0.6);
+    /* Glassmorphism Style Terang */
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* --- 5. Tombol dan Input (Menggunakan Warna Aksen Soft Gold) --- */
+/* --- 5. Tombol dan Input (Menggunakan Warna Aksen Terracotta) --- */
 .form-control {
-    background-color: rgba(255, 255, 255, 0.1); 
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #f0f0f0;
+    background-color: rgba(0, 0, 0, 0.05); /* Latar belakang input sangat terang */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #465A6B;
     border-radius: 8px;
 }
 
 .form-control:focus {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-color: #D4AF37; /* Soft Gold Aksen */
-    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.4);
+    background-color: rgba(0, 0, 0, 0.08);
+    border-color: #E9967A; /* Terracotta Aksen */
+    box-shadow: 0 0 0 0.25rem rgba(233, 150, 122, 0.4);
 }
 
-/* Tombol Utama (Primary - Aksen Soft Gold) */
+/* Tombol Utama (Primary - Aksen Terracotta) */
 .btn-primary {
-    background-color: #D4AF37; /* Soft Gold */
-    border-color: #D4AF37;
-    color: #2c3e50; /* Teks gelap agar kontras */
+    background-color: #E9967A; /* Terracotta */
+    border-color: #E9967A;
+    color: #fff; /* Teks putih agar kontras */
     border-radius: 8px; 
     padding: 10px 25px;
     font-weight: 600;
@@ -107,14 +115,14 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
 }
 
 .btn-primary:hover {
-    background-color: #C0A030; /* Soft Gold lebih gelap saat hover */
-    border-color: #C0A030;
+    background-color: #D4856A; /* Terracotta lebih gelap saat hover */
+    border-color: #D4856A;
 }
 
-/* Tombol Sukses (Success - Warna Biru Tua/Navy) */
+/* Tombol Sukses (Success - Warna Dark Slate) */
 .btn-success {
-    background-color: #34495e; /* Dark Slate Blue */
-    border-color: #34495e;
+    background-color: #465A6B; /* Dark Slate */
+    border-color: #465A6B;
     color: #f0f0f0;
     border-radius: 8px; 
     padding: 10px 25px;
@@ -123,327 +131,92 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
 }
 
 .btn-success:hover {
-    background-color: #2c3e50; 
-    border-color: #2c3e50;
+    background-color: #3A4C5C; 
+    border-color: #3A4C5C;
 }
 
 /* --- 6. Konten Pelajaran (Lesson View) --- */
 .lesson-content {
     padding: 30px;
-    background: rgba(52, 73, 94, 0.6);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* --- 7. Flash Messages (Notifikasi) --- */
 .alert {
-    color: #2c3e50; 
+    color: #465A6B; 
     border: none;
 }
-.alert-info {
-    background-color: rgba(173, 216, 230, 0.8); 
-}
-.alert-success {
-    background-color: rgba(144, 238, 144, 0.8); 
-}
-.alert-warning {
-    background-color: rgba(255, 223, 186, 0.8); 
-}
-.alert-danger {
-    background-color: rgba(255, 160, 160, 0.8); 
-}
+/* ... (Biarkan warna alert default Bootstrap, atau sesuaikan) ... */
 
 /* --- 8. PERBAIKAN DROPDOWN MENU --- */
 
 .dropdown-menu {
-    background-color: rgba(44, 62, 80, 0.9) !important; 
+    background-color: rgba(255, 255, 255, 0.95) !important; 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.1);
     z-index: 9999 !important; 
 }
 
 .dropdown-item {
-    color: #f0f0f0 !important; 
+    color: #465A6B !important; 
     background-color: transparent !important;
     transition: background-color 0.2s;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
-    background-color: rgba(212, 175, 55, 0.1) !important; /* Soft Gold Transparan */
-    color: #D4AF37 !important; 
-}
-
-/* Garis pemisah */
-.dropdown-divider {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Tombol Keluar (Merah) */
-.dropdown-item.text-danger {
-    color: #ff6b6b !important; 
-}
-
-.dropdown-item.text-danger:hover {
-    background-color: rgba(255, 107, 107, 0.1) !important;
+    background-color: rgba(233, 150, 122, 0.1) !important; /* Terracotta Transparan */
+    color: #E9967A !important; 
 }
 
 /* --- 9. Styling Admin Dashboard & Tabel --- */
-.list-group-item.card {
-    background: rgba(52, 73, 94, 0.5) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #f0f0f0 !important;
-    padding: 15px;
-}
-
-.list-group-item.card:hover {
-    background: rgba(52, 73, 94, 0.7) !important;
-    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
-}
-
 .table-dark {
-    --bs-table-bg: rgba(52, 73, 94, 0.5);
-    --bs-table-striped-bg: rgba(52, 73, 94, 0.6);
-    --bs-table-border-color: rgba(255, 255, 255, 0.1);
-    color: #f0f0f0;
+    /* Hapus table-dark, gunakan table-light atau table-striped */
+    --bs-table-bg: rgba(255, 255, 255, 0.8);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.9);
+    --bs-table-border-color: rgba(0, 0, 0, 0.1);
+    color: #465A6B;
 }
 
 .table-dark th, .table-dark td {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
-/* --- 10. STYLING KARTU KURSUS BARU (Glassmorphism Gelap) --- */
+/* --- 10. STYLING KARTU KURSUS BARU --- */
 
 .course-card {
-    /* Menggunakan Glassmorphism Gelap */
-    background: rgba(52, 73, 94, 0.5); 
+    /* Menggunakan Glassmorphism Terang */
+    background: rgba(255, 255, 255, 0.8); 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: box-shadow 0.3s, transform 0.3s;
-    color: #f0f0f0; 
+    color: #465A6B; 
 }
 
-.course-card:hover {
-    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
-    transform: translateY(-3px);
-}
+/* ... (Sesuaikan semua warna ikon dan teks di bawah ini menjadi #E9967A atau #465A6B) ... */
 
-.course-image-container {
-    height: 150px;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 10px;
-    background-color: #2c3e50; /* Warna latar belakang yang lebih lembut */
-}
-
-.course-badge {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.course-title {
-    color: #f0f0f0 !important; 
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Instruktur: Perbaikan Kontras */
-.instructor-info p {
-    color: #f0f0f0 !important; 
-    font-size: 0.9rem;
-}
-.instructor-info small {
-    color: #b0b0b0 !important; 
-    font-size: 0.8rem;
-}
-
-/* Styling untuk gambar instruktur kecil */
-.instructor-img-small {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #D4AF37; /* Soft Gold */
-}
-
-/* Rating */
-.rating-info .fw-bold {
-    color: #f0f0f0 !important; 
-}
-.rating-info .fa-star, .rating-info .fa-star-half-alt {
-    color: #D4AF37 !important; /* Soft Gold */
-}
-
-/* Harga */
 .final-price {
-    color: #D4AF37; /* Soft Gold */
+    color: #E9967A; /* Terracotta */
     font-size: 1.2rem;
 }
 
-.discount-badge {
-    background-color: #e76f51; /* Terracotta */
-    color: #fff;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: bold;
+.instructor-img-small {
+    border: 2px solid #E9967A; /* Terracotta */
 }
 
-.original-price {
-    font-size: 0.9rem;
-    color: #b0b0b0 !important; 
-}
-
-/* Memastikan link kartu tidak memiliki garis bawah */
-.text-decoration-none {
-    text-decoration: none !important;
-}
-
-/* Efek Hover untuk Card Kursus dan Kategori */
-.hover-scale {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-scale:hover {
-    transform: translateY(-3px) scale(1.01); 
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important; 
-}
-
-/* Efek Khusus untuk Kartu Kategori */
-.category-hover-effect {
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.category-hover-effect:hover {
-    border-color: #D4AF37; /* Soft Gold saat hover */
-    background-color: rgba(255, 255, 255, 0.05) !important; 
-}
-
-/* Pastikan gambar di card tidak terdistorsi */
-.course-card .card-img-top {
-    transition: transform 0.5s ease;
-}
-
-.course-card:hover .card-img-top {
-    transform: scale(1.05); 
-}
-
-/* --- 11. STYLING DETAIL KURSUS (Tab dan Sidebar) --- */
-
-/* Styling untuk Tab */
-.nav-tabs {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.nav-tabs .nav-link {
-    color: #b0b0b0 !important;
-    border: none;
-    border-radius: 0;
-    font-weight: 600;
-}
-
-.nav-tabs .nav-link.active {
-    background-color: transparent !important;
-    color: #D4AF37 !important; /* Warna aksen Soft Gold untuk tab aktif */
-    border-bottom: 3px solid #D4AF37 !important;
-}
-
-/* Styling untuk Gambar Instruktur Besar */
-.instructor-img-large {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #D4AF37;
-}
-
-/* Styling untuk list pelajaran yang terkunci */
-.disabled-link {
-    pointer-events: none; 
-    opacity: 0.6;
-}
-
-/* --- 12. STYLING LIST PELAJARAN DI DETAIL KURSUS --- */
-
-.list-group-item {
-    background-color: rgba(255, 255, 255, 0.1) !important; 
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #f0f0f0 !important; 
-    border-radius: 8px;
-    transition: background-color 0.2s;
-}
-
-.list-group-item:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Memastikan teks kecil (durasi) terlihat */
-.list-group-item small {
-    color: #b0b0b0 !important; 
-}
-
-/* Memastikan ikon terlihat */
 .list-group-item .bi-play-circle-fill, .list-group-item .bi-lock-fill {
-    color: #D4AF37 !important; /* Ikon berwarna aksen Soft Gold */
-}
-
-/* --- 13. STYLING ACCORDION (Glassmorphism) --- */
-
-.accordion-item {
-    /* Mewarisi styling kartu Glassmorphism */
-    background: rgba(52, 73, 94, 0.5) !important; 
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 12px !important;
-    margin-bottom: 15px;
-    overflow: hidden;
-}
-
-.accordion-header {
-    border-bottom: none !important;
-}
-
-.accordion-button {
-    background-color: transparent !important;
-    color: #f0f0f0 !important;
-    font-weight: 600;
-    box-shadow: none !important;
-    padding: 1rem 1.25rem;
+    color: #E9967A !important; /* Ikon berwarna aksen Terracotta */
 }
 
 .accordion-button:not(.collapsed) {
-    color: #D4AF37 !important; /* Soft Gold saat terbuka */
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.accordion-body {
-    color: #f0f0f0;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Perbaikan Flash Message Admin di Kolom Kanan */
-.card .alert-info {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #f0f0f0 !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding: 10px;
-    margin-bottom: 0; 
+    color: #E9967A !important; /* Terracotta saat terbuka */
 }
