@@ -1,77 +1,63 @@
-/* --- PALET WARNA SOFT PASTEL WARMTH --- */
-/* Background: Soft Beige (#F5F5DC) */
-/* Accent: Soft Terracotta (#E9967A) */
-/* Secondary/Dark: Dark Slate (#465A6B) */
+/* --- PALET WARNA COOL MODERN GRADIENT (RuangGuru Inspired) --- */
+/* Background: Light Gray (#F8F9FA) */
+/* Accent: Soft Cyan (#00BCD4) */
+/* Secondary/Dark: Dark Slate (#34495E) */
 
-/* --- 1. BACKGROUND KESELURUHAN (Soft Pastel Warmth) --- */
+/* --- 1. BACKGROUND KESELURUHAN --- */
 body {
-    /* Latar belakang hangat dan cerah */
-    background-color: #F5F5DC; 
+    /* Latar belakang sangat terang */
+    background-color: #F8F9FA; 
     min-height: 100vh;
     font-family: 'Poppins', sans-serif; 
-    color: #465A6B; /* Teks utama menjadi Dark Slate */
+    color: #34495E; /* Teks utama Dark Slate */
 }
 
 /* Mengubah warna teks default untuk elemen tertentu */
 h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
-    color: #465A6B !important; /* Teks gelap di latar terang */
+    color: #34495E !important; /* Teks gelap */
 }
 
 /* Perbaikan Kontras: Teks Kecil yang Sulit Dibaca */
 .text-muted {
-    color: #888888 !important; /* Abu-abu lembut */
+    color: #6C757D !important; /* Abu-abu sedang */
 }
 
 /* --- 2. NAVBAR (Soft White / Light Glassmorphism) --- */
 .navbar {
     /* Background terang transparan */
-    background-color: rgba(255, 255, 255, 0.9) !important; 
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); 
+    background-color: rgba(255, 255, 255, 0.95) !important; 
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08); 
     backdrop-filter: blur(5px); 
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     z-index: 1000;
 }
 
 /* Mengubah warna link di navbar agar terlihat (Dark Slate) */
-.navbar-dark .navbar-nav .nav-link {
-    color: #465A6B !important; /* Teks gelap */
-}
-.navbar-dark .navbar-nav .nav-link:hover {
-    color: #E9967A !important; /* Aksen Terracotta saat hover */
-}
-/* Perlu ubah navbar-dark menjadi navbar-light di base.html */
 .navbar-light .navbar-nav .nav-link {
-    color: #465A6B !important;
+    color: #34495E !important;
 }
 .navbar-light .navbar-nav .nav-link:hover {
-    color: #E9967A !important;
+    color: #00BCD4 !important; /* Aksen Cyan saat hover */
 }
-
 
 /* --- 3. EFEK GLASSMORPHISM PADA KARTU (Card) --- */
 .card {
     /* Background Glassmorphism Terang */
-    background: rgba(255, 255, 255, 0.8); 
-    backdrop-filter: blur(10px); 
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 1); /* Hampir solid putih */
+    backdrop-filter: blur(0px); 
     
     /* Border dan Shadow */
     border-radius: 15px; 
     border: 1px solid rgba(0, 0, 0, 0.05); 
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.05); /* Shadow sangat lembut */
     
-    color: #465A6B; /* Teks gelap */
+    color: #34495E; 
     transition: transform 0.3s ease-in-out, box-shadow 0.3s;
 }
 
 .card:hover {
     transform: translateY(-3px); 
-    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
-}
-
-/* Pastikan judul dan teks di dalam kartu juga gelap */
-.card-title, .card-text {
-    color: #465A6B !important;
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
 }
 
 /* --- 4. EFEK GLASSMORPHISM PADA FORMULIR (Login/Register) --- */
@@ -81,33 +67,32 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     padding: 35px;
     
     /* Glassmorphism Style Terang */
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 1);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border-radius: 15px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* --- 5. Tombol dan Input (Menggunakan Warna Aksen Terracotta) --- */
+/* --- 5. Tombol dan Input (Menggunakan Warna Aksen Cyan) --- */
 .form-control {
-    background-color: rgba(0, 0, 0, 0.05); /* Latar belakang input sangat terang */
+    background-color: rgba(0, 0, 0, 0.03); 
     border: 1px solid rgba(0, 0, 0, 0.1);
-    color: #465A6B;
+    color: #34495E;
     border-radius: 8px;
 }
 
 .form-control:focus {
-    background-color: rgba(0, 0, 0, 0.08);
-    border-color: #E9967A; /* Terracotta Aksen */
-    box-shadow: 0 0 0 0.25rem rgba(233, 150, 122, 0.4);
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: #00BCD4; /* Cyan Aksen */
+    box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.4);
 }
 
-/* Tombol Utama (Primary - Aksen Terracotta) */
+/* Tombol Utama (Primary - Aksen Cyan) */
 .btn-primary {
-    background-color: #E9967A; /* Terracotta */
-    border-color: #E9967A;
-    color: #fff; /* Teks putih agar kontras */
+    background-color: #00BCD4; /* Cyan */
+    border-color: #00BCD4;
+    color: #fff; 
     border-radius: 8px; 
     padding: 10px 25px;
     font-weight: 600;
@@ -115,14 +100,14 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
 }
 
 .btn-primary:hover {
-    background-color: #D4856A; /* Terracotta lebih gelap saat hover */
-    border-color: #D4856A;
+    background-color: #00A8C0; /* Cyan lebih gelap saat hover */
+    border-color: #00A8C0;
 }
 
 /* Tombol Sukses (Success - Warna Dark Slate) */
 .btn-success {
-    background-color: #465A6B; /* Dark Slate */
-    border-color: #465A6B;
+    background-color: #34495E; /* Dark Slate */
+    border-color: #34495E;
     color: #f0f0f0;
     border-radius: 8px; 
     padding: 10px 25px;
@@ -130,93 +115,30 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     transition: background-color 0.3s;
 }
 
-.btn-success:hover {
-    background-color: #3A4C5C; 
-    border-color: #3A4C5C;
-}
-
-/* --- 6. Konten Pelajaran (Lesson View) --- */
-.lesson-content {
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border-radius: 18px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* --- 7. Flash Messages (Notifikasi) --- */
-.alert {
-    color: #465A6B; 
-    border: none;
-}
-/* ... (Biarkan warna alert default Bootstrap, atau sesuaikan) ... */
-
-/* --- 8. PERBAIKAN DROPDOWN MENU --- */
-
-.dropdown-menu {
-    background-color: rgba(255, 255, 255, 0.95) !important; 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.1);
-    z-index: 9999 !important; 
-}
-
-.dropdown-item {
-    color: #465A6B !important; 
-    background-color: transparent !important;
-    transition: background-color 0.2s;
-}
-
-.dropdown-item:hover, .dropdown-item:focus {
-    background-color: rgba(233, 150, 122, 0.1) !important; /* Terracotta Transparan */
-    color: #E9967A !important; 
-}
-
-/* --- 9. Styling Admin Dashboard & Tabel --- */
-.table-dark {
-    /* Hapus table-dark, gunakan table-light atau table-striped */
-    --bs-table-bg: rgba(255, 255, 255, 0.8);
-    --bs-table-striped-bg: rgba(255, 255, 255, 0.9);
-    --bs-table-border-color: rgba(0, 0, 0, 0.1);
-    color: #465A6B;
-}
-
-.table-dark th, .table-dark td {
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
 /* --- 10. STYLING KARTU KURSUS BARU --- */
-
-.course-card {
-    /* Menggunakan Glassmorphism Terang */
-    background: rgba(255, 255, 255, 0.8); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 15px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: box-shadow 0.3s, transform 0.3s;
-    color: #465A6B; 
-}
-
-/* ... (Sesuaikan semua warna ikon dan teks di bawah ini menjadi #E9967A atau #465A6B) ... */
-
 .final-price {
-    color: #E9967A; /* Terracotta */
+    color: #00BCD4; /* Cyan */
     font-size: 1.2rem;
 }
 
 .instructor-img-small {
-    border: 2px solid #E9967A; /* Terracotta */
+    border: 2px solid #00BCD4; /* Cyan */
 }
 
 .list-group-item .bi-play-circle-fill, .list-group-item .bi-lock-fill {
-    color: #E9967A !important; /* Ikon berwarna aksen Terracotta */
+    color: #00BCD4 !important; /* Ikon berwarna aksen Cyan */
 }
 
 .accordion-button:not(.collapsed) {
-    color: #E9967A !important; /* Terracotta saat terbuka */
+    color: #00BCD4 !important; /* Cyan saat terbuka */
+}
+
+/* --- 14. HERO SECTION GRADIENT (BARU) --- */
+.hero-section-gradient {
+    /* Gradien Biru ke Ungu */
+    background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
+    color: #fff;
+    padding: 80px 0;
+    border-radius: 0 0 30px 30px; /* Sudut melengkung di bawah */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }

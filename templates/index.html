@@ -2,25 +2,24 @@
 
 {% block content %}
 
-<!-- 1. HERO SECTION - Lebih Dinamis dan Fokus pada Solusi -->
-<div class="hero-section bg-transparent text-white py-5 mb-5 rounded-3">
+<!-- 1. HERO SECTION - Menggunakan Gradien Baru (Cool Modern Gradient) -->
+<div class="hero-section-gradient text-white py-5 mb-5 shadow-lg">
     <div class="container text-center">
-        <!-- Judul menggunakan warna aksen Soft Gold -->
-        <h1 class="display-4 fw-bolder mb-3 animate__animated animate__fadeInDown" style="color: #D4AF37 !important;">
-            Siap Jadi Jagoan Digital? 🚀
+        <!-- Judul menggunakan warna Putih untuk kontras di latar gelap -->
+        <h1 class="display-4 fw-bolder mb-3 animate__animated animate__fadeInDown text-white">
+            Hi, Squad! Mau belajar apa hari ini?
         </h1>
-        <p class="lead mb-4 text-muted animate__animated animate__fadeIn">
-            Upgrade skillmu di bidang Web Dev, Data Science, dan Desain Grafis. <br class="d-none d-md-inline">
-            Mulai karir impianmu dari sekarang!
+        <p class="lead mb-4 animate__animated animate__fadeIn text-white-50">
+            Upgrade skillmu di bidang Web Dev, Data Science, dan Desain Grafis.
         </p>
         
-        <!-- Tombol CTA (Call to Action) Utama - Menggunakan btn-primary (Soft Gold) -->
-        <a href="#featured-courses" class="btn btn-primary btn-lg fw-bold shadow-lg me-3 animate__animated animate__pulse animate__infinite">
+        <!-- Tombol CTA (Call to Action) Utama - Menggunakan btn-primary (Cyan) -->
+        <a href="#featured-courses" class="btn btn-primary btn-lg fw-bold shadow-sm me-3 animate__animated animate__pulse animate__infinite">
             Lihat Semua Kursus
         </a>
         {% if not current_user.is_authenticated %}
-        <!-- Tombol Outline - Menggunakan btn-outline-primary (Soft Gold Outline) -->
-        <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg fw-bold shadow-sm animate__animated animate__fadeInUp">
+        <!-- Tombol Outline - Menggunakan btn-outline-light agar terlihat di latar gelap -->
+        <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg fw-bold shadow-sm animate__animated animate__fadeInUp">
             Daftar Gratis!
         </a>
         {% endif %}
@@ -31,13 +30,14 @@
 
 <!-- 3. VALUE PROPOSITION (Mengapa Harus Kami?) -->
 <div class="container my-5 py-3">
-    <h3 class="text-center mb-5 fw-bold" style="color: #D4AF37 !important;">Kenapa Harus Jago Komputer?</h3>
+    <!-- Hapus inline style warna lama -->
+    <h3 class="text-center mb-5 fw-bold text-primary">Kenapa Harus Jago Komputer?</h3>
     <div class="row text-center g-4">
         <div class="col-md-4">
             <!-- Card Glassmorphism -->
             <div class="card h-100 border-0 shadow-lg p-4 hover-scale">
-                <!-- Ikon menggunakan warna aksen Soft Gold -->
-                <i class="bi bi-lightning-charge-fill mb-3" style="font-size: 2rem; color: #D4AF37 !important;"></i>
+                <!-- Ikon menggunakan warna aksen Cyan (melalui style.css) -->
+                <i class="bi bi-lightning-charge-fill mb-3 text-primary" style="font-size: 2rem;"></i>
                 <h5 class="fw-bold">Materi Kekinian</h5>
                 <p class="text-muted">Belajar teknologi terbaru yang dipakai industri, bukan teori usang.</p>
             </div>
@@ -45,7 +45,7 @@
         <div class="col-md-4">
             <!-- Card Glassmorphism -->
             <div class="card h-100 border-0 shadow-lg p-4 hover-scale">
-                <i class="bi bi-laptop-fill mb-3" style="font-size: 2rem; color: #D4AF37 !important;"></i>
+                <i class="bi bi-laptop-fill mb-3 text-primary" style="font-size: 2rem;"></i>
                 <h5 class="fw-bold">Belajar Fleksibel</h5>
                 <p class="text-muted">Akses 24/7. Atur jadwal belajarmu sendiri, cocok buat anak sekolah!</p>
             </div>
@@ -53,7 +53,7 @@
         <div class="col-md-4">
             <!-- Card Glassmorphism -->
             <div class="card h-100 border-0 shadow-lg p-4 hover-scale">
-                <i class="bi bi-patch-check-fill mb-3" style="font-size: 2rem; color: #D4AF37 !important;"></i>
+                <i class="bi bi-patch-check-fill mb-3 text-primary" style="font-size: 2rem;"></i>
                 <h5 class="fw-bold">Sertifikat Resmi</h5>
                 <p class="text-muted">Dapatkan sertifikat yang bisa kamu lampirkan di portofolio atau CV.</p>
             </div>
@@ -63,7 +63,8 @@
 
 <!-- 4. KATEGORI UTAMA - Lebih Interaktif dan Visual -->
 <div class="mt-5 pt-3">
-    <h3 class="mb-4 fw-bold text-center" style="color: #D4AF37 !important;">Jelajahi Kategori Populer</h3>
+    <!-- Hapus inline style warna lama -->
+    <h3 class="mb-4 fw-bold text-center text-primary">Jelajahi Kategori Populer</h3>
     <p class="text-center text-muted mb-5">Pilih bidang yang paling kamu suka dan mulai belajar hari ini!</p>
     
     <div class="row g-4 text-center justify-content-center">
@@ -81,8 +82,8 @@
                 <!-- Menggunakan kelas 'category-hover-effect' dan 'card' Glassmorphism -->
                 <div class="card border-0 shadow-lg h-100 category-hover-effect" style="border-radius: 15px;">
                     <div class="card-body p-4">
-                        <!-- Ikon menggunakan warna aksen Soft Gold -->
-                        <i class="bi bi-{{ cat.icon }} mb-2" style="font-size: 2.5rem; color: #D4AF37 !important;"></i>
+                        <!-- Ikon menggunakan warna aksen Cyan (melalui style.css) -->
+                        <i class="bi bi-{{ cat.icon }} mb-2 text-primary" style="font-size: 2.5rem;"></i>
                         <h6 class="fw-bolder text-dark mb-1">{{ cat.name }}</h6>
                         <small class="text-muted d-none d-md-block">{{ cat.desc }}</small>
                     </div>
@@ -95,7 +96,8 @@
 
 <!-- 5. KURSUS UNGGULAN (Featured Courses) -->
 <div id="featured-courses" class="mt-5 pt-5">
-    <h3 class="mb-4 fw-bold text-center" style="color: #D4AF37 !important;">Kursus Paling Populer 🔥</h3>
+    <!-- Hapus inline style warna lama -->
+    <h3 class="mb-4 fw-bold text-center text-primary">Kursus Paling Populer 🔥</h3>
     <p class="text-center text-muted mb-5">Lihat kursus yang paling banyak diminati oleh siswa lain.</p>
     
     <div class="row g-4">
@@ -108,7 +110,7 @@
     </div>
     
     <div class="text-center mt-5">
-        <!-- Tombol Utama (Soft Gold) -->
+        <!-- Tombol Utama (Cyan) -->
         <a href="{{ url_for('search') }}" class="btn btn-primary btn-lg fw-bold shadow-lg hover-scale">
             Lihat Semua Kursus ({{ courses|length }})
         </a>

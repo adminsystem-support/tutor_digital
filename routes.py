@@ -424,14 +424,20 @@ def admin_dashboard():
                            total_courses=total_courses,
                            total_enrollments=total_enrollments,
                            total_confirmed=total_confirmed,
-                           Enrollment=Enrollment)
+                           Enrollment=Enrollment,
+                           is_dashboard=True) # <--- TAMBAHKAN INI
 
 @app.route('/admin/users')
 @login_required
 @admin_required
 def admin_users():
     users = User.query.all()
-    return render_template('admin/users.html', title='Manajemen Pengguna', users=users)
+    
+    # PASTIKAN INI MENGARAH KE users.html
+    return render_template('admin/users.html', 
+                           title='Manajemen Pengguna', 
+                           users=users,
+                           Enrollment=Enrollment)
 
 @app.route('/admin/toggle_admin/<int:user_id>')
 @login_required
