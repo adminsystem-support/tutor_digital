@@ -5,12 +5,13 @@
 <!-- 1. HERO SECTION - Menggunakan Gradien Baru (Cool Modern Gradient) -->
 <div class="hero-section-gradient text-white py-5 mb-5 shadow-lg">
     <div class="container text-center">
-        <!-- Judul menggunakan warna Putih untuk kontras di latar gelap -->
+        <!-- JUDUL BARU -->
         <h1 class="display-4 fw-bolder mb-3 animate__animated animate__fadeInDown text-white">
-            Hi, Squad! Mau belajar apa hari ini?
+            Siapkan Skill untuk Dunia Kerja Sejak Sekarang!
         </h1>
+        <!-- PARAGRAF BARU -->
         <p class="lead mb-4 animate__animated animate__fadeIn text-white-50">
-            Upgrade skillmu di bidang Web Dev, Data Science, dan Desain Grafis.
+            Pelajari skill digital yang dibutuhkan industri dan bangun portofolio sebelum lulus.
         </p>
         
         <!-- Tombol CTA (Call to Action) Utama - Menggunakan btn-primary (Cyan) -->
@@ -18,9 +19,9 @@
             Lihat Semua Kursus
         </a>
         {% if not current_user.is_authenticated %}
-        <!-- Tombol Outline - Menggunakan btn-outline-light agar terlihat di latar gelap -->
+        <!-- Tombol Outline - UBAH LABEL MENJADI MULAI GRATIS -->
         <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg fw-bold shadow-sm animate__animated animate__fadeInUp">
-            Daftar Gratis!
+            Mulai Gratis!
         </a>
         {% endif %}
     </div>

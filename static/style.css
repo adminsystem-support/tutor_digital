@@ -60,6 +60,11 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
 }
 
+/* Pastikan judul dan teks di dalam kartu juga gelap */
+.card-title, .card-text {
+    color: #34495E !important;
+}
+
 /* --- 4. EFEK GLASSMORPHISM PADA FORMULIR (Login/Register) --- */
 .container form {
     max-width: 450px;
@@ -115,6 +120,68 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     transition: background-color 0.3s;
 }
 
+.btn-success:hover {
+    background-color: #2c3e50; 
+    border-color: #2c3e50;
+}
+
+/* --- 6. Konten Pelajaran (Lesson View) --- */
+.lesson-content {
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* --- 7. Flash Messages (Notifikasi) --- */
+.alert {
+    color: #34495E; 
+    border: none;
+}
+/* ... (Biarkan warna alert default Bootstrap, atau sesuaikan) ... */
+
+/* --- 8. PERBAIKAN DROPDOWN MENU --- */
+
+.dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.95) !important; 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 8px 30px 0 rgba(0, 0, 0, 0.1);
+    z-index: 9999 !important; 
+}
+
+.dropdown-item {
+    color: #34495E !important; 
+    background-color: transparent !important;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: rgba(0, 188, 212, 0.1) !important; /* Cyan Transparan */
+    color: #00BCD4 !important; 
+}
+
+/* Garis pemisah */
+.dropdown-divider {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* --- 9. Styling Admin Dashboard & Tabel --- */
+.table-dark {
+    /* Mengganti table-dark dengan style terang */
+    --bs-table-bg: rgba(255, 255, 255, 0.8);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.9);
+    --bs-table-border-color: rgba(0, 0, 0, 0.1);
+    color: #34495E;
+}
+
+.table-dark th, .table-dark td {
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 /* --- 10. STYLING KARTU KURSUS BARU --- */
 .final-price {
     color: #00BCD4; /* Cyan */
@@ -141,4 +208,39 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     padding: 80px 0;
     border-radius: 0 0 30px 30px; /* Sudut melengkung di bawah */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Perbaikan Tombol Outline di Hero Section (Wajib) --- */
+.hero-section-gradient .btn-outline-light {
+    color: #fff !important;
+    border-color: #fff !important;
+    background-color: transparent !important;
+    font-weight: 700; /* Lebih tebal */
+    border-width: 2px; /* Border lebih tebal */
+}
+
+.hero-section-gradient .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important; /* Sedikit transparan saat hover */
+    color: #fff !important;
+}
+
+/* Efek Hover untuk Card Kursus dan Kategori */
+.hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: translateY(-3px) scale(1.01); 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important; 
+}
+
+/* Efek Khusus untuk Kartu Kategori */
+.category-hover-effect {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.category-hover-effect:hover {
+    border-color: #00BCD4; /* Cyan saat hover */
+    background-color: rgba(0, 188, 212, 0.05) !important; 
 }
