@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField, FloatField, SelectField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Optional
+from flask_wtf.file import FileField, FileAllowed
 from models import User # Import model User
 
 # --- FORMULIR ---
@@ -64,8 +65,17 @@ class CourseForm(FlaskForm):
     rating = FloatField('Rating (Contoh: 4.8)', validators=[DataRequired()])
     price = IntegerField('Harga Normal (Rp)', validators=[DataRequired()])
     discount_percent = IntegerField('Diskon (%)', default=0)
-    image_url = StringField('URL Gambar Kursus')
-    instructor_image_url = StringField('URL Foto Instruktur')
+    duration_hours = IntegerField('Durasi Kursus (Jam)', validators=[DataRequired()], default=10) # FIELD BARU
+    
+    image = FileField('Gambar Kursus', validators=[
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Hanya file gambar (JPG, PNG, JPEG) yang diizinkan!'),
+        Optional()
+    ])
+    
+    instructor_image = FileField('Foto Instruktur', validators=[
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Hanya file gambar (JPG, PNG, JPEG) yang diizinkan!'),
+        Optional()
+    ])
     
     submit = SubmitField('Simpan Perubahan')
 
@@ -73,6 +83,7 @@ class LessonForm(FlaskForm):
     title = StringField('Judul Pelajaran', validators=[DataRequired()])
     content = TextAreaField('Konten Pelajaran (Bisa HTML/Embed)', validators=[DataRequired()])
     order = IntegerField('Urutan Pelajaran', validators=[DataRequired()])
+    duration_minutes = IntegerField('Durasi Pelajaran (Menit)', validators=[DataRequired()], default=15) # FIELD BARU
     submit = SubmitField('Tambah Pelajaran')
 
 class ProfileForm(FlaskForm):

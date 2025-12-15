@@ -2,45 +2,69 @@
 
 {% block content %}
 
-<!-- 1. HEADER KURSUS (Transparan dan Elegan) -->
-<div class="mb-5 p-4 glass-card rounded-3">
-    <div class="row align-items-center mb-3">
-        <!-- Kolom Kiri: Breadcrumb -->
-        <div class="col-md-8">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-primary text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ course.title }}</li>
-                </ol>
-            </nav>
-        </div>
+<!-- 1. HEADER KURSUS (Lebih Terstruktur dan Elegan) -->
+<div class="container">
+    <div class="mb-5 p-4 card shadow-lg border-0 rounded-4">
         
-        <!-- Kolom Kanan: Search Bar (Sejajar dengan Breadcrumb) -->
-        <div class="col-md-4">
-            <!-- Form Pencarian Pelajaran -->
-            <form action="{{ url_for('search_lesson', course_id=course.id) }}" method="GET">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control rounded-pill border-0" placeholder="Coba cari materi belajar di sini" value="{{ search_query|default('') }}">
-                    <button type="submit" class="btn btn-outline-secondary rounded-pill ms-n5" style="z-index: 10; border-left: none;">
-                        <i class="bi bi-search text-muted"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Detail Kursus -->
-    <div class="row align-items-start">
-        <div class="col-md-8">
-            <h1 class="display-5 fw-bold text-primary mb-2">{{ course.title }}</h1>
-            <p class="lead text-muted">{{ course.description }}</p>
+        <!-- Baris 1: Breadcrumb dan Search Bar -->
+        <div class="row align-items-center mb-4">
+            <!-- Kolom Kiri: Breadcrumb -->
+            <div class="col-md-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-primary text-decoration-none small fw-bold">Beranda</a></li>
+                        <li class="breadcrumb-item active text-muted small" aria-current="page">{{ course.title }}</li>
+                    </ol>
+                </nav>
+            </div>
             
-            <!-- Info Instruktur dan Rating -->
-            <div class="d-flex align-items-center mt-3">
-                <img src="{{ course.instructor_image_url }}" class="rounded-circle me-2" alt="Instruktur" style="width: 40px; height: 40px; object-fit: cover;">
-                <div>
-                    <small class="fw-bold">{{ course.instructor_name }}</small><br>
-                    <span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> {{ course.rating }}</span>
+            <!-- Kolom Kanan: Search Bar (Dipisahkan) -->
+            <div class="col-md-6">
+                <!-- Form Pencarian Pelajaran -->
+                <form action="{{ url_for('search_lesson', course_id=course.id) }}" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control rounded-pill border-0 shadow-sm" placeholder="Cari materi belajar di sini" value="{{ search_query|default('') }}">
+                        <button type="submit" class="btn btn-primary rounded-pill ms-n5" style="z-index: 10;">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Baris 2: Detail Kursus -->
+        <div class="row align-items-start g-4">
+            <div class="col-md-4">
+                <!-- Gambar Kursus -->
+                <div class="position-relative">
+                    {% if course.image_url %}
+                        <img src="{{ url_for('static', filename='uploads/' + course.image_url) }}" class="img-fluid rounded-3 shadow-sm" alt="{{ course.title }}" style="height: 250px; width: 100%; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-light text-center d-flex align-items-center justify-content-center rounded-3" style="height: 250px;">
+                            <i class="bi bi-image-fill text-secondary display-4"></i>
+                        </div>
+                    {% endif %}
+                    <span class="badge bg-primary position-absolute top-0 start-0 m-2">{{ course.category }}</span>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bolder text-dark mb-3">{{ course.title }}</h1>
+                <p class="lead text-muted small">{{ course.description }}</p>
+                
+                <!-- Info Instruktur dan Rating -->
+                <div class="d-flex align-items-center mt-4">
+                    {% if course.instructor_image_url %}
+                        <img src="{{ url_for('static', filename='uploads/' + course.instructor_image_url) }}" class="rounded-circle me-3 instructor-img-small" alt="Instruktur" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        <i class="bi bi-person-circle me-3 text-primary" style="font-size: 2.5rem;"></i>
+                    {% endif %}
+                    
+                    <div>
+                        <small class="fw-bold text-dark d-block">{{ course.instructor_name }}</small>
+                        <small class="text-muted d-block">{{ course.instructor_title }}</small>
+                        <span class="badge bg-warning text-dark mt-1"><i class="bi bi-star-fill"></i> {{ course.rating }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,110 +72,107 @@
 </div>
 
 <!-- 2. DAFTAR PELAJARAN (Semua Bab) -->
-<div class="row justify-content-center">
-    <div class="col-lg-10">
-        <h3 class="text-center mb-4 fw-bold">
-            {% if search_query %}
-                Hasil Pencarian untuk "{{ search_query }}" ({{ lessons|length }} Pelajaran)
-            {% else %}
-                Semua Bab ({{ course.total_lessons() }} Pelajaran)
-            {% endif %}
-        </h3>
-        
-        <!-- Banner Pendaftaran -->
-        {% if not is_enrolled %}
-        <div class="alert text-center glass-card mb-4 p-3 d-flex justify-content-center align-items-center" role="alert">
-            
-            {% set final_price = course.price - (course.price * course.discount_percent / 100) %}
-            
-            {% if payment_status == 'paid_pending' %}
-                <!-- Tampilan Menunggu Konfirmasi -->
-                <i class="bi bi-clock-history me-2 text-info" style="font-size: 1.5rem;"></i> 
-                <span class="fw-bold text-dark">Pembayaran Anda sudah tercatat.</span> 
-                <span class="text-info ms-2">**Menunggu konfirmasi Admin** untuk akses penuh.</span>
-            
-            {% elif payment_status == 'unpaid' or payment_status == 'none' %}
-                <i class="bi bi-lock-fill me-2 text-warning"></i> Anda belum terdaftar di kursus ini.
-                
-                {% if final_price > 0 %}
-                    <!-- Jika berbayar, arahkan ke checkout -->
-                    <a href="{{ url_for('checkout', course_id=course.id) }}" class="btn btn-warning btn-sm ms-3 fw-bold">
-                        Daftar Sekarang (Rp {{ final_price|format_rupiah }})
-                    </a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <h3 class="text-center mb-4 fw-bold text-primary">
+                {% if search_query %}
+                    Hasil Pencarian untuk "{{ search_query }}" ({{ lessons|length }} Pelajaran)
                 {% else %}
-                    <!-- Jika GRATIS, arahkan ke enroll (pendaftaran langsung) -->
-                    <a href="{{ url_for('enroll', course_id=course.id) }}" class="btn btn-success btn-sm ms-3 fw-bold">
-                        Daftar GRATIS!
-                    </a>
+                    Semua Bab ({{ course.total_lessons() }} Pelajaran)
                 {% endif %}
-            {% endif %}
-        </div>
-        {% endif %}
-
-        <!-- Daftar Pelajaran dalam Grid 2 Kolom -->
-        <div class="row g-4">
-            {% for lesson in lessons %}
-            {% set progress = lesson.progresses.filter_by(user_id=current_user.id).first() %}
-            {% set is_completed = progress.is_completed if progress else False %}
+            </h3>
             
-            <div class="col-md-6">
-                <!-- Link hanya aktif jika sudah terdaftar -->
-                <a href="{{ url_for('lesson_view', lesson_id=lesson.id) if is_enrolled else '#' }}" 
-                   class="text-decoration-none text-dark {% if not is_enrolled %}disabled-link{% endif %}">
-                    <div class="card glass-card lesson-card-item h-100 {% if is_completed %}border-success{% endif %}">
-                        <div class="card-body d-flex align-items-center">
-                            <!-- Ikon Pelajaran -->
-                            <div class="me-3 position-relative">
-                                <i class="bi bi-journal-bookmark-fill text-primary" style="font-size: 2rem;"></i>
-                                <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
-                                    Bab {{ lesson.order }}
-                                </span>
-                            </div>
+            <!-- Banner Pendaftaran -->
+            {% if not is_enrolled %}
+            <div class="alert text-center shadow-sm mb-4 p-3 d-flex flex-column flex-md-row justify-content-center align-items-center" role="alert">
+                
+                {% set final_price = course.price - (course.price * course.discount_percent / 100) %}
+                
+                {% if payment_status == 'paid_pending' %}
+                    <!-- Tampilan Menunggu Konfirmasi -->
+                    <i class="bi bi-clock-history me-2 text-info fs-4"></i> 
+                    <span class="fw-bold text-dark me-2">Pembayaran Anda sudah tercatat.</span> 
+                    <span class="text-info small">Menunggu konfirmasi Admin untuk akses penuh.</span>
+                
+                {% elif payment_status == 'unpaid' or payment_status == 'none' %}
+                    <i class="bi bi-lock-fill me-2 text-danger fs-4"></i> 
+                    <span class="fw-bold text-dark me-3">Anda belum terdaftar di kursus ini.</span>
+                    
+                    {% if final_price > 0 %}
+                        <!-- Jika berbayar, arahkan ke checkout -->
+                        <a href="{{ url_for('checkout', course_id=course.id) }}" class="btn btn-primary btn-sm ms-3 fw-bold shadow-sm">
+                            Daftar Sekarang (Rp {{ final_price|format_rupiah }})
+                        </a>
+                    {% else %}
+                        <!-- Jika GRATIS, arahkan ke enroll (pendaftaran langsung) -->
+                        <a href="{{ url_for('enroll', course_id=course.id) }}" class="btn btn-success btn-sm ms-3 fw-bold shadow-sm">
+                            Daftar GRATIS!
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Daftar Pelajaran dalam Accordion (Lebih Rapi) -->
+            <div class="accordion" id="lessonAccordion">
+                {% for lesson in lessons %}
+                {% set progress = lesson.progresses.filter_by(user_id=current_user.id).first() %}
+                {% set is_completed = progress.is_completed if progress else False %}
+                
+                <div class="accordion-item mb-3 rounded-3 shadow-sm hover-scale">
+                    <h2 class="accordion-header" id="heading{{ lesson.id }}">
+                        <button class="accordion-button {% if not is_enrolled %}collapsed{% endif %} fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ lesson.id }}" aria-expanded="{% if is_enrolled %}true{% else %}false{% endif %}" aria-controls="collapse{{ lesson.id }}">
+                            <span class="badge bg-primary me-3">Bab {{ lesson.order }}</span>
+                            <span class="text-dark me-auto">{{ lesson.title }}</span>
                             
-                            <div class="flex-grow-1">
-                                <h6 class="card-title mb-1 fw-bold text-truncate">{{ lesson.title }}</h6>
-                                
+                            {% if is_enrolled %}
+                                {% if is_completed %}
+                                    <i class="bi bi-check-circle-fill text-success ms-3 fs-5" title="Selesai"></i>
+                                {% else %}
+                                    <i class="bi bi-play-circle-fill text-info ms-3 fs-5" title="Mulai"></i>
+                                {% endif %}
+                            {% else %}
+                                <i class="bi bi-lock-fill text-danger ms-3 fs-5" title="Terkunci"></i>
+                            {% endif %}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ lesson.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ lesson.id }}" data-bs-parent="#lessonAccordion">
+                        <div class="accordion-body bg-light">
+                            {% if is_enrolled %}
+                                <p class="text-muted small">Klik tombol di bawah untuk memulai pelajaran.</p>
+                                <a href="{{ url_for('lesson_view', lesson_id=lesson.id) }}" class="btn btn-sm btn-primary fw-bold">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> Mulai Pelajaran
+                                </a>
                                 <!-- Progress Bar -->
-                                <div class="progress" role="progressbar" aria-label="Progress" aria-valuenow="{{ 100 if is_completed else 0 }}" aria-valuemin="0" aria-valuemax="100" style="height: 8px;">
+                                <div class="progress mt-3" role="progressbar" aria-label="Progress" aria-valuenow="{{ 100 if is_completed else 0 }}" aria-valuemin="0" aria-valuemax="100" style="height: 8px;">
                                     <div class="progress-bar {% if is_completed %}bg-success{% else %}bg-secondary{% endif %}" style="width: {{ 100 if is_completed else 0 }}%"></div>
                                 </div>
-                                <small class="text-muted">{{ 100 if is_completed else 0 }}% Selesai</small>
-                            </div>
-                            
-                            <div class="ms-3">
-                                <i class="bi bi-chevron-right text-muted"></i>
-                            </div>
+                                <small class="text-muted d-block mt-1">{{ 100 if is_completed else 0 }}% Selesai</small>
+                            {% else %}
+                                <p class="text-danger small">Pelajaran terkunci. Silakan daftar untuk mengakses konten.</p>
+                            {% endif %}
                         </div>
                     </div>
-                </a>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
-        
-        {% if not lessons %}
-        <div class="alert alert-info text-center glass-card mt-4" role="alert">
-            <i class="bi bi-info-circle-fill me-2"></i> 
-            {% if search_query %}
-                Tidak ditemukan pelajaran yang cocok dengan kata kunci "{{ search_query }}".
-            {% else %}
-                Belum ada pelajaran yang ditambahkan ke kursus ini.
+            
+            {% if not lessons %}
+            <div class="alert alert-info text-center shadow-sm mt-4 p-4" role="alert">
+                <i class="bi bi-info-circle-fill me-2 fs-4"></i> 
+                <h4 class="alert-heading">Tidak Ditemukan</h4>
+                <p>
+                    {% if search_query %}
+                        Tidak ditemukan pelajaran yang cocok dengan kata kunci "{{ search_query }}".
+                    {% else %}
+                        Belum ada pelajaran yang ditambahkan ke kursus ini.
+                    {% endif %}
+                </p>
+            </div>
             {% endif %}
         </div>
-        {% endif %}
     </div>
 </div>
-
-<!-- CSS Kustom untuk menonaktifkan link jika belum terdaftar -->
-<style>
-    .disabled-link {
-        pointer-events: none;
-        opacity: 0.6;
-    }
-    .disabled-link .lesson-card-item:hover {
-        transform: none;
-        box-shadow: none;
-        border-left-color: transparent;
-    }
-</style>
 
 {% endblock %}

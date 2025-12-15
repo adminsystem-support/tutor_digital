@@ -93,6 +93,11 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.4);
 }
 
+/* PERBAIKAN: Tambahkan sedikit margin bawah pada label form untuk keterbacaan */
+.form-label {
+    margin-bottom: 0.3rem; 
+}
+
 /* Tombol Utama (Primary - Aksen Cyan) */
 .btn-primary {
     background-color: #00BCD4; /* Cyan */
@@ -200,13 +205,13 @@ h1, h2, h3, h4, h5, h6, p, a, .nav-link, .navbar-brand {
     color: #00BCD4 !important; /* Cyan saat terbuka */
 }
 
-/* --- 14. HERO SECTION GRADIENT (BARU) --- */
+/* --- 14. HERO SECTION GRADIENT (DIPERBAIKI) --- */
 .hero-section-gradient {
-    /* Gradien Biru ke Ungu */
-    background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
+    /* Gradien Cyan ke Biru Tua (Lebih Sesuai Tema) */
+    background: linear-gradient(135deg, #00BCD4 0%, #4A90E2 100%); 
     color: #fff;
-    padding: 80px 0;
-    border-radius: 0 0 30px 30px; /* Sudut melengkung di bawah */
+    padding: 100px 0; /* Tambah padding vertikal */
+    border-radius: 0 0 30px 30px; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 

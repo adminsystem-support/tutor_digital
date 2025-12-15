@@ -1,40 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-secondary btn-sm mb-3">← Kembali ke Detail Kursus</a>
-            <h1 class="text-center mb-4">{{ title }}</h1>
+        <div class="col-lg-8">
             
-            <form action="" method="post" novalidate>
-                {{ form.hidden_tag() }}
-                
-                <div class="mb-3">
-                    {{ form.title.label(class="form-label") }}
-                    {{ form.title(class="form-control") }}
-                    {% for error in form.title.errors %}
-                    <span class="text-danger">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                
-                <div class="mb-3">
-                    {{ form.order.label(class="form-label") }}
-                    {{ form.order(class="form-control") }}
-                    {% for error in form.order.errors %}
-                    <span class="text-danger">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                
-                <div class="mb-3">
-                    {{ form.content.label(class="form-label") }}
-                    {{ form.content(class="form-control", rows=10) }}
-                    {% for error in form.content.errors %}
-                    <span class="text-danger">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                
-                <p>{{ form.submit(class="btn btn-success w-100 mt-3", value="Simpan Perubahan") }}</p>
-            </form>
+            <!-- Header Halaman -->
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h1 class="fw-bolder text-primary"><i class="bi bi-pencil-square me-3"></i> Edit Pelajaran</h1>
+                <a href="{{ url_for('edit_course', course_id=course.id) }}" class="btn btn-outline-secondary fw-bold">
+                    <i class="bi bi-arrow-left me-1"></i> Kembali ke Kursus
+                </a>
+            </div>
+            
+            <!-- Informasi Kursus (Informatif) -->
+            <div class="alert alert-info shadow-sm p-3 mb-4">
+                <h5 class="alert-heading fw-bold mb-1">{{ course.title }}</h5>
+                <p class="mb-0 small">Bab yang sedang diedit: **Bab {{ lesson.order }}**</p>
+            </div>
+            
+            <!-- Form Edit Pelajaran -->
+            <div class="card shadow-lg p-5 border-0 rounded-4">
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-4">
+                        {{ form.title.label(class="form-label fw-bold text-dark") }}
+                        {{ form.title(class="form-control form-control-lg", placeholder="Contoh: Pengenalan Dasar Jaringan") }}
+                        {% for error in form.title.errors %}
+                        <div class="text-danger small mt-1">[{{ error }}]</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        {{ form.order.label(class="form-label fw-bold text-dark") }}
+                        {{ form.order(class="form-control", placeholder="Contoh: 1, 2, 3...") }}
+                        {% for error in form.order.errors %}
+                        <div class="text-danger small mt-1">[{{ error }}]</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Jika Anda ingin menambahkan durasi per pelajaran (dalam menit) -->
+                    <!-- ASUMSI: Anda telah menambahkan 'duration_minutes' ke LessonForm -->
+                    {% if form.duration_minutes %}
+                    <div class="mb-4">
+                        {{ form.duration_minutes.label(class="form-label fw-bold text-dark") }}
+                        {{ form.duration_minutes(class="form-control", placeholder="Contoh: 15 (menit)") }}
+                        {% for error in form.duration_minutes.errors %}
+                        <div class="text-danger small mt-1">[{{ error }}]</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-4">
+                        {{ form.content.label(class="form-label fw-bold text-dark") }}
+                        {{ form.content(class="form-control", rows=15, placeholder="Masukkan konten pelajaran di sini (HTML, teks, atau embed code)") }}
+                        {% for error in form.content.errors %}
+                        <div class="text-danger small mt-1">[{{ error }}]</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mt-5">
+                        {{ form.submit(class="btn btn-primary btn-lg w-100 fw-bold shadow-lg", value="Simpan Perubahan") }}
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

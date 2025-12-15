@@ -1,17 +1,55 @@
+# Di routes.py
+
 from app import app, db # HANYA app dan db dari app.py
-from utils import allowed_file # <--- Ambil allowed_file dari utils.py
+from utils import allowed_file 
 from models import User, Course, Lesson, Enrollment, LessonProgress
-from forms import LoginForm, RegistrationForm, CourseForm, LessonForm, ProfileForm
+from forms import LoginForm, RegistrationForm, CourseForm, LessonForm, ProfileForm, AdminUserForm
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from urllib.parse import urlparse
 from functools import wraps
 from werkzeug.utils import secure_filename
 import os
-from utils import allowed_file
-from forms import AdminUserForm
 
-# --- FUNGSI PEMBANTU ---
+## --- FUNGSI PEMBANTU UNTUK FILE UPLOAD ---
+
+def save_picture(form_picture, folder_key='IMAGE_FOLDER'):
+    """Menyimpan file gambar yang diunggah ke folder yang ditentukan oleh folder_key."""
+    
+    # 1. Amankan nama file
+    random_hex = os.urandom(8).hex()
+    _, f_ext = os.path.splitext(form_picture.filename)
+    filename = secure_filename(random_hex + f_ext)
+    
+    # 2. Buat path lengkap
+    folder_name = app.config.get(folder_key)
+    if not folder_name:
+        # Ini akan terjadi jika Anda belum menambahkan IMAGE_FOLDER/PROOF_FOLDER ke config.py
+        print(f"ERROR: Konfigurasi folder '{folder_key}' tidak ditemukan di config.py")
+        return None
+        
+    picture_path = os.path.join(app.root_path, folder_name, filename)
+    
+    # 3. Simpan file
+    try:
+        form_picture.save(picture_path)
+        return filename
+    except Exception as e:
+        print(f"ERROR SAVING FILE: {e}")
+        return None
+
+def delete_picture(filename, folder_key='IMAGE_FOLDER'):
+    """Menghapus file gambar dari folder yang ditentukan."""
+    if filename:
+        folder_name = app.config.get(folder_key)
+        if not folder_name:
+            return
+            
+        file_path = os.path.join(app.root_path, folder_name, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+# --- FUNGSI PEMBANTU DECORATOR ---
 
 def admin_required(f):
     @wraps(f)
@@ -21,6 +59,42 @@ def admin_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
+
+def save_picture(form_picture, folder_key='IMAGE_FOLDER'):
+    """Menyimpan file gambar yang diunggah ke folder yang ditentukan oleh folder_key."""
+    
+    # 1. Amankan nama file
+    random_hex = os.urandom(8).hex()
+    _, f_ext = os.path.splitext(form_picture.filename)
+    filename = secure_filename(random_hex + f_ext)
+    
+    # 2. Buat path lengkap
+    # Gunakan folder yang ditentukan oleh folder_key
+    folder_name = app.config.get(folder_key)
+    if not folder_name:
+        raise ValueError(f"Konfigurasi folder '{folder_key}' tidak ditemukan di config.py")
+        
+    picture_path = os.path.join(app.root_path, folder_name, filename)
+    
+    # 3. Simpan file
+    try:
+        form_picture.save(picture_path)
+        return filename
+    except Exception as e:
+        print(f"ERROR SAVING FILE: {e}")
+        return None
+
+# Perbaiki fungsi delete_picture juga
+def delete_picture(filename, folder_key='IMAGE_FOLDER'):
+    """Menghapus file gambar dari folder yang ditentukan."""
+    if filename:
+        folder_name = app.config.get(folder_key)
+        if not folder_name:
+            return
+            
+        file_path = os.path.join(app.root_path, folder_name, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
 # --- 5. ROUTES (VIEWS) ---
 
@@ -348,9 +422,11 @@ def confirm_payment_upload(course_id):
 
     # 4. Proses Upload File (DEFINISIKAN FILENAME DI SINI)
     # Menggunakan app.config untuk UPLOAD_FOLDER
-    upload_folder = app.config['UPLOAD_FOLDER']
+    upload_folder = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'])
     
-    filename = secure_filename(f"{current_user.id}_{course_id}_{os.urandom(4).hex()}_{file.filename}")
+    # Tambahkan hash acak untuk menghindari konflik nama file
+    random_hex = os.urandom(4).hex()
+    filename = secure_filename(f"{current_user.id}_{course_id}_{random_hex}_{file.filename}")
     file_path = os.path.join(upload_folder, filename)
     
     # Pastikan folder upload ada
@@ -478,12 +554,23 @@ def admin_user_detail(user_id):
                            target_user=user, 
                            user_courses=user_courses)
 
+# --- ROUTE BARU: TAMBAH KURSUS DENGAN FILE UPLOAD ---
 @app.route('/admin/add_course', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def add_course():
     form = CourseForm()
     if form.validate_on_submit():
+        
+        image_filename = None
+        instructor_image_filename = None
+        
+        if form.image.data:
+            image_filename = save_picture(form.image.data)
+            
+        if form.instructor_image.data:
+            instructor_image_filename = save_picture(form.instructor_image.data)
+            
         course = Course(
             title=form.title.data, 
             description=form.description.data,
@@ -493,8 +580,9 @@ def add_course():
             rating=form.rating.data,
             price=form.price.data,
             discount_percent=form.discount_percent.data,
-            image_url=form.image_url.data,
-            instructor_image_url=form.instructor_image_url.data
+            duration_hours=form.duration_hours.data, # TAMBAHAN FIELD BARU
+            image_url=image_filename,
+            instructor_image_url=instructor_image_filename
         )
         db.session.add(course)
         db.session.commit()
@@ -503,14 +591,29 @@ def add_course():
         
     return render_template('admin/add_course.html', title='Tambah Kursus Baru', form=form)
 
+# --- ROUTE BARU: EDIT KURSUS DENGAN FILE UPLOAD ---
 @app.route('/admin/edit_course/<int:course_id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_course(course_id):
     course = Course.query.get_or_404(course_id)
-    form = CourseForm()
+    form = CourseForm(obj=course) 
     
     if form.validate_on_submit():
+        
+        if form.image.data:
+            delete_picture(course.image_url)
+            picture_file = save_picture(form.image.data)
+            if picture_file:
+                course.image_url = picture_file
+        
+        if form.instructor_image.data:
+            delete_picture(course.instructor_image_url)
+            picture_file = save_picture(form.instructor_image.data)
+            if picture_file:
+                course.instructor_image_url = picture_file
+
+        # Update field lainnya
         course.title = form.title.data
         course.description = form.description.data
         course.category = form.category.data
@@ -519,24 +622,14 @@ def edit_course(course_id):
         course.rating = form.rating.data
         course.price = form.price.data
         course.discount_percent = form.discount_percent.data
-        course.image_url = form.image_url.data
-        course.instructor_image_url = form.instructor_image_url.data
+        course.duration_hours = form.duration_hours.data # TAMBAHAN FIELD BARU
         
         db.session.commit()
         flash(f'Kursus "{course.title}" berhasil diperbarui!', 'success')
         return redirect(url_for('admin_courses'))
     
     elif request.method == 'GET':
-        form.title.data = course.title
-        form.description.data = course.description
-        form.category.data = course.category
-        form.instructor_name.data = course.instructor_name
-        form.instructor_title.data = course.instructor_title
-        form.rating.data = course.rating
-        form.price.data = course.price
-        form.discount_percent.data = course.discount_percent
-        form.image_url.data = course.image_url
-        form.instructor_image_url.data = course.instructor_image_url
+        pass
         
     return render_template('admin/edit_course.html', 
                            title=f'Edit Kursus: {course.title}', 
@@ -556,12 +649,13 @@ def add_lesson(course_id):
             course_id=course.id,
             title=form.title.data,
             content=form.content.data,
-            order=form.order.data
+            order=form.order.data,
+            duration_minutes=form.duration_minutes.data # TAMBAHAN FIELD BARU
         )
         db.session.add(lesson)
         db.session.commit()
         flash(f'Pelajaran "{lesson.title}" berhasil ditambahkan ke kursus {course.title}!', 'success')
-        return redirect(url_for('course_detail', course_id=course.id))
+        return redirect(url_for('edit_course', course_id=course.id))
         
     return render_template('admin/add_lesson.html', title=f'Tambah Pelajaran untuk {course.title}', form=form, course=course)
 
@@ -571,20 +665,20 @@ def add_lesson(course_id):
 def edit_lesson(lesson_id):
     lesson = Lesson.query.get_or_404(lesson_id)
     course = lesson.course
-    form = LessonForm()
+    form = LessonForm(obj=lesson) # Menggunakan obj=lesson untuk mengisi form
     
     if form.validate_on_submit():
         lesson.title = form.title.data
         lesson.content = form.content.data
         lesson.order = form.order.data
+        lesson.duration_minutes = form.duration_minutes.data # TAMBAHAN FIELD BARU
         db.session.commit()
         flash(f'Pelajaran "{lesson.title}" berhasil diperbarui!', 'success')
-        return redirect(url_for('course_detail', course_id=course.id))
+        return redirect(url_for('edit_course', course_id=course.id))
         
     elif request.method == 'GET':
-        form.title.data = lesson.title
-        form.content.data = lesson.content
-        form.order.data = lesson.order
+        # Form sudah diisi otomatis oleh LessonForm(obj=lesson)
+        pass
         
     return render_template('admin/edit_lesson.html', title=f'Edit Pelajaran: {lesson.title}', form=form, course=course, lesson=lesson)
 
@@ -601,7 +695,7 @@ def delete_lesson(lesson_id):
     db.session.commit()
     
     flash(f'Pelajaran "{lesson.title}" berhasil dihapus.', 'success')
-    return redirect(url_for('course_detail', course_id=course_id))
+    return redirect(url_for('edit_course', course_id=course_id)) # Arahkan ke edit_course
 
 @app.route('/admin/enrollments')
 @login_required
@@ -774,3 +868,39 @@ def admin_add_user():
         return redirect(url_for('admin_users'))
         
     return render_template('admin/add_user.html', title='Tambah Pengguna Baru', form=form)
+
+@app.route('/admin/delete_course/<int:course_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_course(course_id):
+    course = Course.query.get_or_404(course_id)
+    
+    # Hapus gambar kursus dan foto instruktur dari server
+    delete_picture(course.image_url)
+    delete_picture(course.instructor_image_url)
+    
+    # Hapus semua pelajaran, progres, dan pendaftaran terkait
+    LessonProgress.query.filter(LessonProgress.lesson_id.in_([l.id for l in course.lessons])).delete(synchronize_session=False)
+    Lesson.query.filter_by(course_id=course.id).delete(synchronize_session=False)
+    Enrollment.query.filter_by(course_id=course.id).delete(synchronize_session=False)
+    
+    db.session.delete(course)
+    db.session.commit()
+    
+    flash(f'Kursus "{course.title}" dan semua data terkait berhasil dihapus.', 'success')
+    return redirect(url_for('admin_courses'))
+
+@app.route('/admin/reset_password/<int:user_id>', methods=['POST'])
+@login_required
+@admin_required
+def admin_reset_password(user_id):
+    user = User.query.get_or_404(user_id)
+    
+    # Tentukan password default yang aman (misalnya '123456' atau password acak)
+    new_password = '123456' 
+    
+    user.set_password(new_password)
+    db.session.commit()
+    
+    flash(f'Password untuk pengguna "{user.username}" berhasil direset. Password baru: {new_password}', 'success')
+    return redirect(url_for('admin_users'))

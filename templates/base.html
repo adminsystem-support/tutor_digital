@@ -79,18 +79,21 @@
     </nav>
 
     <!-- MAIN CONTENT AREA -->
-    <main class="container my-5 pt-5">
+    <!-- PERBAIKAN: Hapus kelas 'container' agar konten di dalamnya bisa menggunakan 'container-fluid' -->
+    <main class="my-5 pt-5">
         <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
         <!-- BLOCK CONTENT -->
         {% block content %}{% endblock %}

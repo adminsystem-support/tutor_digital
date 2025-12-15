@@ -20,4 +20,5 @@ class Config:
     
     # --- KONFIGURASI UPLOAD ---
     UPLOAD_FOLDER = 'static/proofs'
+    IMAGE_FOLDER = 'static/uploads'
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}

@@ -2,46 +2,48 @@
 
 {% block content %}
 
-<!-- 1. HERO SECTION (Menggunakan Gaya Gradien Ungu-Pink dari index.html) -->
-<div class="hero-section text-center mb-5">
-    <div class="container">
+<!-- 1. HERO SECTION (Menggunakan Gaya Gradien Konsisten) -->
+<div class="hero-section-gradient text-white py-5 mb-5 shadow-lg">
+    <div class="container text-center">
         <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-3">
-            <ol class="breadcrumb text-white">
-                <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-white text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active text-white" aria-current="page">{{ category_name }}</li>
+        <nav aria-label="breadcrumb" class="mb-3 d-flex justify-content-center">
+            <ol class="breadcrumb text-white mb-0">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-white text-decoration-none small">Beranda</a></li>
+                <li class="breadcrumb-item active text-white-50 small" aria-current="page">Kategori</li>
             </ol>
         </nav>
 
-        <div class="row align-items-center">
-            <div class="col">
-                <h1 class="display-5 fw-bold mb-0">Kursus Kategori: {{ category_name }}</h1>
-                <p class="lead fw-light">Temukan semua kursus terbaik di bidang {{ category_name }}!</p>
-            </div>
-        </div>
+        <h1 class="display-5 fw-bolder text-white mb-2 animate__animated animate__fadeInDown">
+            Kursus Kategori: {{ category_name }}
+        </h1>
+        <p class="lead fw-light text-white-50 animate__animated animate__fadeIn">
+            Temukan semua kursus terbaik di bidang {{ category_name }}!
+        </p>
     </div>
 </div>
 
 <!-- 2. DAFTAR KATEGORI (Untuk Navigasi Cepat) -->
-<div class="mt-3 mb-5">
-    <h3 class="mb-4 text-primary fw-bold">Pilih Kategori Lain</h3>
+<div class="container mb-5">
+    <h3 class="mb-4 text-primary fw-bold border-bottom pb-2">Pilih Kategori Lain</h3>
     
-    <div class="row g-4 text-center">
+    <div class="row g-4 text-center justify-content-center">
         <!-- Daftar Kategori (HARUS SAMA DENGAN YANG DI ROUTE) -->
         {% set categories = [
             {'name': 'Web Dev', 'icon': 'code-slash', 'color': 'primary'},
             {'name': 'Data Science', 'icon': 'graph-up', 'color': 'success'},
             {'name': 'Desain Grafis', 'icon': 'palette', 'color': 'danger'},
             {'name': 'Jaringan', 'icon': 'router', 'color': 'info'},
-            {'name': 'Office', 'icon': 'file-earmark-text', 'color': 'warning'}
+            {'name': 'Office', 'icon': 'file-earmark-text', 'color': 'warning'},
+            {'name': 'Umum', 'icon': 'lightbulb', 'color': 'secondary'}
         ] %}
         
         {% for cat in categories %}
         <div class="col-4 col-md-2">
             <a href="{{ url_for('courses_by_category', category_name=cat.name) }}" class="text-decoration-none text-dark">
-                <div class="card category-icon-card glass-card p-3 h-100 {% if cat.name == category_name %}border border-primary border-3{% endif %}">
+                <!-- Menggunakan kelas hover-scale dan category-hover-effect -->
+                <div class="card shadow-sm p-3 h-100 hover-scale category-hover-effect {% if cat.name == category_name %}border border-primary border-3{% endif %}">
                     <i class="bi bi-{{ cat.icon }} text-{{ cat.color }} mb-2" style="font-size: 2.5rem;"></i>
-                    <small class="fw-bold">{{ cat.name }}</small>
+                    <small class="fw-bold text-dark">{{ cat.name }}</small>
                 </div>
             </a>
         </div>
@@ -51,49 +53,75 @@
 
 
 <!-- 3. KURSUS UNGGULAN (Difilter) -->
-<h3 class="mt-5 mb-4 border-bottom pb-2 text-primary fw-bold">Kursus Unggulan di {{ category_name }}</h3>
+<div class="container">
+    <h3 class="mt-5 mb-4 border-bottom pb-2 text-primary fw-bold">Daftar Kursus di {{ category_name }} ({{ courses|length }})</h3>
 
-<div class="row g-4">
-    {% for course in courses %}
-    <div class="col-lg-4 col-md-6">
-        <div class="card course-card glass-card h-100">
-            <img src="{{ course.image_url }}" class="card-img-top" alt="{{ course.title }}" style="height: 200px; object-fit: cover; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title text-primary">{{ course.title }}</h5>
-                <p class="card-text text-muted small mb-2">{{ course.description[:100] }}...</p>
-                
-                <!-- Rating dan Instruktur -->
-                <div class="d-flex align-items-center mb-3">
-                    <span class="badge bg-warning text-dark me-2">
-                        <i class="bi bi-star-fill"></i> {{ course.rating }}
-                    </span>
-                    <img src="{{ course.instructor_image_url }}" class="rounded-circle me-2" alt="Instruktur" style="width: 30px; height: 30px; object-fit: cover;">
-                    <small class="text-secondary">{{ course.instructor_name }}</small>
-                </div>
-
-                <!-- Harga -->
-                <div class="mt-auto">
-                    {% set final_price = course.price - (course.price * course.discount_percent / 100) %}
-                    {% if course.discount_percent > 0 %}
-                        <span class="badge bg-danger me-2">{{ course.discount_percent }}% OFF</span>
-                        <span class="text-decoration-line-through text-muted small me-2">Rp {{ course.price|format_rupiah }}</span>
-                        <h4 class="text-success">Rp {{ final_price|format_rupiah }}</h4>
+    <div class="row g-4">
+        {% for course in courses %}
+        <div class="col-lg-4 col-md-6">
+            <!-- Menggunakan struktur card yang sama dengan index.html untuk konsistensi -->
+            <div class="card h-100 hover-scale shadow-sm">
+                <!-- Gambar Kursus -->
+                <div class="position-relative">
+                    {% if course.image_url %}
+                        <img src="{{ url_for('static', filename='uploads/' + course.image_url) }}" class="card-img-top" alt="{{ course.title }}" style="height: 200px; object-fit: cover;">
                     {% else %}
-                        <h4 class="text-success">Rp {{ course.price|format_rupiah }}</h4>
+                        <!-- Placeholder jika tidak ada gambar -->
+                        <div class="bg-light text-center d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-image-fill text-secondary display-4"></i>
+                        </div>
                     {% endif %}
+                    
+                    <!-- Badge Kategori dan Rating -->
+                    <span class="badge bg-primary position-absolute top-0 start-0 m-2">{{ course.category }}</span>
+                    <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">
+                        <i class="bi bi-star-fill me-1"></i> {{ course.rating|round(1) }}
+                    </span>
                 </div>
                 
-                <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary mt-3">Lihat Kursus</a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold text-dark">{{ course.title }}</h5>
+                    <p class="card-text small text-muted mb-2">Oleh: {{ course.instructor_name }}</p>
+                    
+                    <!-- Info Tambahan (Informatif) -->
+                    <div class="d-flex justify-content-between small text-muted mb-3">
+                        <span><i class="bi bi-book me-1"></i> {{ course.total_lessons() }} Pelajaran</span>
+                        <span><i class="bi bi-clock me-1"></i> 10 Jam</span>
+                    </div>
+
+                    <!-- Harga -->
+                    <div class="mt-auto">
+                        {% if course.price > 0 %}
+                            <div class="d-flex align-items-center">
+                                {% if course.discount_percent > 0 %}
+                                    <span class="text-danger text-decoration-line-through small me-2">Rp {{ course.price|format_rupiah }}</span>
+                                    <span class="badge bg-success me-2">DISKON {{ course.discount_percent }}%</span>
+                                {% endif %}
+                                <span class="final-price fw-bolder">Rp {{ course.final_price|format_rupiah }}</span>
+                            </div>
+                        {% else %}
+                            <span class="badge bg-success fs-6 fw-bolder">GRATIS</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-white border-0 pt-0">
+                    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary w-100 fw-bold">
+                        Lihat Detail <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 
-{% if not courses %}
-<div class="alert alert-info text-center glass-card mt-4" role="alert">
-    <i class="bi bi-info-circle-fill me-2"></i> Maaf, belum ada kursus yang tersedia di kategori **{{ category_name }}**.
+    {% if not courses %}
+    <div class="alert alert-info text-center shadow-sm mt-5 p-4" role="alert">
+        <i class="bi bi-info-circle-fill me-2 fs-4"></i> 
+        <h4 class="alert-heading">Kursus Belum Tersedia</h4>
+        <p>Maaf, belum ada kursus yang tersedia di kategori **{{ category_name }}** saat ini. Coba cek kategori lainnya!</p>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
 
 {% endblock %}

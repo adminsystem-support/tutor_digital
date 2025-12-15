@@ -1,128 +1,137 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<!-- 1. Header Personalisasi dan Statistik Ringkas -->
-<div class="row mb-5">
-    <div class="col-12">
-        <div class="card glass-card p-4 text-center">
-            <div class="card-body">
-                <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
-                <h1 class="card-title mt-3">Selamat Datang Kembali, <span class="text-primary">{{ current_user.username }}</span>!</h1>
-                <p class="lead text-muted">Siap untuk melanjutkan perjalanan belajar Anda?</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mb-5 g-4">
-    <!-- Kartu Statistik: Total Kursus -->
-    <div class="col-md-6 col-lg-4">
-        <div class="card glass-card h-100 border-start border-primary border-5">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <i class="bi bi-book-half text-primary" style="font-size: 2rem;"></i>
-                    </div>
-                    <div class="col">
-                        <div class="text-uppercase text-muted small fw-bold">Kursus Diikuti</div>
-                        <div class="h5 mb-0 fw-bold">{{ user_courses|length }}</div>
-                    </div>
+<div class="container">
+    <!-- 1. Header Personalisasi dan Statistik Ringkas -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow-lg p-4 text-center border-0 rounded-4">
+                <div class="card-body">
+                    <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
+                    <h1 class="card-title mt-3 fw-bolder">Selamat Datang Kembali, <span class="text-primary">{{ current_user.username }}</span>!</h1>
+                    <p class="lead text-muted mb-0">Siap untuk melanjutkan perjalanan belajar Anda?</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Kartu Statistik: Progres Rata-Rata (Simulasi) -->
-    {% set total_progress = 0 %}
-    {% for item in user_courses %}
-        {% set total_progress = total_progress + item.progress %}
-    {% endfor %}
-    {% set avg_progress = (total_progress / user_courses|length) if user_courses|length > 0 else 0 %}
-    
-    <div class="col-md-6 col-lg-4">
-        <div class="card glass-card h-100 border-start border-success border-5">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <i class="bi bi-graph-up-arrow text-success" style="font-size: 2rem;"></i>
-                    </div>
-                    <div class="col">
-                        <div class="text-uppercase text-muted small fw-bold">Progres Rata-Rata</div>
-                        <div class="h5 mb-0 fw-bold">{{ avg_progress|round(0) }}%</div>
+    <!-- Kartu Statistik -->
+    <div class="row mb-5 g-4">
+        <!-- Kartu Statistik: Total Kursus -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg h-100 border-start border-primary border-5 hover-scale">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="bi bi-book-half text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="col">
+                            <div class="text-uppercase text-muted small fw-bold">Kursus Diikuti</div>
+                            <div class="h5 mb-0 fw-bolder text-dark">{{ user_courses|length }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Kartu Statistik: Aksi Cepat -->
-    <div class="col-lg-4 d-none d-lg-block">
-        <div class="card glass-card h-100 border-start border-warning border-5">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <i class="bi bi-search text-warning" style="font-size: 2rem;"></i>
-                    </div>
-                    <div class="col">
-                        <div class="text-uppercase text-muted small fw-bold">Aksi Cepat</div>
-                        <a href="{{ url_for('index') }}" class="btn btn-sm btn-warning mt-1">Cari Kursus Baru</a>
+        <!-- Kartu Statistik: Progres Rata-Rata (Simulasi) -->
+        {% set total_progress = 0 %}
+        {% for item in user_courses %}
+            {% set total_progress = total_progress + item.progress %}
+        {% endfor %}
+        {% set avg_progress = (total_progress / user_courses|length) if user_courses|length > 0 else 0 %}
+        
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg h-100 border-start border-success border-5 hover-scale">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="bi bi-graph-up-arrow text-success" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="col">
+                            <div class="text-uppercase text-muted small fw-bold">Progres Rata-Rata</div>
+                            <div class="h5 mb-0 fw-bolder text-dark">{{ avg_progress|round(0) }}%</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- 2. Daftar Kursus yang Diikuti (Lebih Visual) -->
-<h2 class="mt-4 mb-4 border-bottom pb-2"><i class="bi bi-list-check me-2"></i> Kursus yang Sedang Berjalan</h2>
-
-<div class="row g-4">
-    {% for item in user_courses %}
-    <div class="col-lg-6">
-        <div class="card glass-card h-100 course-card">
-            <div class="row g-0">
-                <!-- Kolom Kiri: Gambar Kursus -->
-                <div class="col-md-4">
-                    <img src="{{ item.course.image_url }}" class="img-fluid rounded-start h-100" alt="{{ item.course.title }}" style="object-fit: cover;">
-                </div>
-                
-                <!-- Kolom Kanan: Detail dan Progres -->
-                <div class="col-md-8">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h5 class="card-title text-primary">{{ item.course.title }}</h5>
-                        <p class="card-text text-muted small mb-2">{{ item.course.description[:80] }}...</p>
-                        
-                        <!-- Progress Bar Interaktif -->
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="fw-bold small">Progres Anda</span>
-                                <span class="fw-bold small text-success">{{ item.progress }}%</span>
-                            </div>
-                            <div class="progress mb-3" role="progressbar" aria-label="Progress" aria-valuenow="{{ item.progress }}" aria-valuemin="0" aria-valuemax="100" style="height: 15px;">
-                                <div class="progress-bar {% if item.progress == 100 %}bg-success{% else %}bg-primary{% endif %}" style="width: {{ item.progress }}%"></div>
-                            </div>
-                            
-                            <a href="{{ url_for('course_detail', course_id=item.course.id) }}" class="btn btn-sm w-100 {% if item.progress == 100 %}btn-success{% else %}btn-primary{% endif %}">
-                                {% if item.progress == 100 %}
-                                <i class="bi bi-check-circle-fill me-1"></i> Selesai! Lihat Detail
-                                {% else %}
-                                <i class="bi bi-play-circle-fill me-1"></i> Lanjutkan Belajar
-                                {% endif %}
-                            </a>
+        <!-- Kartu Statistik: Aksi Cepat -->
+        <div class="col-lg-4 d-none d-lg-block">
+            <div class="card shadow-lg h-100 border-start border-info border-5 hover-scale">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <i class="bi bi-search text-info" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="col">
+                            <div class="text-uppercase text-muted small fw-bold">Aksi Cepat</div>
+                            <a href="{{ url_for('search') }}" class="btn btn-sm btn-info mt-1 fw-bold">Cari Kursus Baru</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-</div>
 
-{% if not user_courses %}
-<div class="alert alert-info text-center mt-5 glass-card" role="alert">
-    <i class="bi bi-info-circle-fill me-2"></i> Anda belum terdaftar di kursus manapun. <a href="{{ url_for('index') }}" class="alert-link">Lihat semua kursus di sini.</a>
-</div>
-{% endif %}
+    <!-- 2. Daftar Kursus yang Diikuti (Lebih Visual) -->
+    <h2 class="mt-4 mb-4 border-bottom pb-2 fw-bolder text-primary"><i class="bi bi-list-check me-2"></i> Kursus yang Sedang Berjalan</h2>
 
+    <div class="row g-4">
+        {% for item in user_courses %}
+        <div class="col-lg-6">
+            <div class="card shadow-lg h-100 hover-scale">
+                <div class="row g-0">
+                    <!-- Kolom Kiri: Gambar Kursus -->
+                    <div class="col-md-4">
+                        {% if item.course.image_url %}
+                            <img src="{{ url_for('static', filename='uploads/' + item.course.image_url) }}" class="img-fluid rounded-start h-100" alt="{{ item.course.title }}" style="object-fit: cover;">
+                        {% else %}
+                            <div class="bg-light text-center d-flex align-items-center justify-content-center rounded-start h-100">
+                                <i class="bi bi-image-fill text-secondary display-6"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Kolom Kanan: Detail dan Progres -->
+                    <div class="col-md-8">
+                        <div class="card-body d-flex flex-column h-100">
+                            <h5 class="card-title fw-bold text-dark">{{ item.course.title }}</h5>
+                            <p class="card-text text-muted small mb-2">{{ item.course.description[:80] }}...</p>
+                            
+                            <!-- Progress Bar Interaktif -->
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold small">Progres Anda</span>
+                                    <span class="fw-bold small text-success">{{ item.progress }}%</span>
+                                </div>
+                                <div class="progress mb-3" role="progressbar" aria-label="Progress" aria-valuenow="{{ item.progress }}" aria-valuemin="0" aria-valuemax="100" style="height: 15px;">
+                                    <div class="progress-bar {% if item.progress == 100 %}bg-success{% else %}bg-primary{% endif %}" style="width: {{ item.progress }}%"></div>
+                                </div>
+                                
+                                <a href="{{ url_for('course_detail', course_id=item.course.id) }}" class="btn btn-sm w-100 fw-bold {% if item.progress == 100 %}btn-success{% else %}btn-primary{% endif %}">
+                                    {% if item.progress == 100 %}
+                                    <i class="bi bi-check-circle-fill me-1"></i> Selesai! Lihat Detail
+                                    {% else %}
+                                    <i class="bi bi-play-circle-fill me-1"></i> Lanjutkan Belajar
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not user_courses %}
+    <div class="alert alert-info text-center mt-5 shadow-sm p-4" role="alert">
+        <i class="bi bi-info-circle-fill me-2 fs-4"></i> 
+        <h4 class="alert-heading">Belum Ada Kursus</h4>
+        <p>Anda belum terdaftar di kursus manapun. <a href="{{ url_for('index') }}" class="alert-link fw-bold">Lihat semua kursus di sini.</a></p>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

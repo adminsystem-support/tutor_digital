@@ -2,28 +2,30 @@
 
 {% block content %}
 
+<div class="container">
     <!-- Judul Halaman -->
-    <h1 class="mb-4 fw-bold" style="color: #E9967A !important;"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</h1>
+    <h1 class="mb-5 fw-bolder text-primary border-bottom pb-3"><i class="bi bi-speedometer2 me-3"></i> Admin Dashboard</h1>
 
     <!-- Konten Dashboard (Kartu Statistik & Menu Cepat) -->
     <!-- GUNAKAN FLAG is_dashboard UNTUK KONDISI -->
     {% if is_dashboard %}
         <div class="row g-4 mb-5">
+            
             <!-- Kartu Statistik: Total Pengguna -->
             <div class="col-md-4">
-                <!-- Menggunakan hover-scale untuk interaktivitas -->
-                <div class="card p-3 h-100 border-start border-5 hover-scale" style="border-color: #465A6B !important;">
+                <!-- Menggunakan hover-scale dan shadow-lg untuk interaktivitas -->
+                <div class="card p-4 h-100 border-start border-5 border-primary shadow-lg hover-scale">
                     <div class="card-body p-0">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <!-- Ikon menggunakan warna Dark Slate -->
-                                <i class="bi bi-people-fill" style="font-size: 2.5rem; color: #465A6B !important;"></i>
+                                <!-- Ikon menggunakan warna Primary (Cyan) -->
+                                <i class="bi bi-people-fill text-primary" style="font-size: 2.5rem;"></i>
                             </div>
                             <div class="col">
                                 <div class="text-uppercase text-muted small fw-bold">Total Pengguna</div>
-                                <div class="h4 mb-0 fw-bold" style="color: #465A6B !important;">{{ total_users }}</div>
-                                <!-- Link menggunakan warna Dark Slate -->
-                                <a href="{{ url_for('admin_users') }}" class="small fw-bold text-decoration-none" style="color: #465A6B !important;">Lihat Detail &rarr;</a>
+                                <div class="h4 mb-0 fw-bolder text-dark">{{ total_users }}</div>
+                                <!-- Link menggunakan warna Primary -->
+                                <a href="{{ url_for('admin_users') }}" class="small fw-bold text-decoration-none text-primary">Lihat Detail &rarr;</a>
                             </div>
                         </div>
                     </div>
@@ -32,39 +34,39 @@
 
             <!-- Kartu Statistik: Total Kursus -->
             <div class="col-md-4">
-                <!-- Menggunakan hover-scale untuk interaktivitas -->
-                <div class="card p-3 h-100 border-start border-5 hover-scale" style="border-color: #E9967A !important;">
+                <!-- Menggunakan hover-scale dan shadow-lg untuk interaktivitas -->
+                <div class="card p-4 h-100 border-start border-5 border-success shadow-lg hover-scale">
                     <div class="card-body p-0">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <!-- Ikon menggunakan warna Terracotta -->
-                                <i class="bi bi-book-fill" style="font-size: 2.5rem; color: #E9967A !important;"></i>
+                                <!-- Ikon menggunakan warna Success (Hijau) -->
+                                <i class="bi bi-book-fill text-success" style="font-size: 2.5rem;"></i>
                             </div>
                             <div class="col">
                                 <div class="text-uppercase text-muted small fw-bold">Total Kursus</div>
-                                <div class="h4 mb-0 fw-bold" style="color: #465A6B !important;">{{ total_courses }}</div>
-                                <!-- Link menggunakan warna Terracotta -->
-                                <a href="{{ url_for('admin_courses') }}" class="small fw-bold text-decoration-none" style="color: #E9967A !important;">Kelola Kursus &rarr;</a>
+                                <div class="h4 mb-0 fw-bolder text-dark">{{ total_courses }}</div>
+                                <!-- Link menggunakan warna Success -->
+                                <a href="{{ url_for('admin_courses') }}" class="small fw-bold text-decoration-none text-success">Kelola Kursus &rarr;</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Kartu Statistik: Total Pendaftaran -->
+            <!-- Kartu Statistik: Total Pendaftaran Terkonfirmasi -->
             <div class="col-md-4">
-                <!-- Menggunakan hover-scale untuk interaktivitas -->
-                <div class="card p-3 h-100 border-start border-5 hover-scale" style="border-color: #465A6B !important;">
+                <!-- Menggunakan hover-scale dan shadow-lg untuk interaktivitas -->
+                <div class="card p-4 h-100 border-start border-5 border-info shadow-lg hover-scale">
                     <div class="card-body p-0">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <!-- Ikon menggunakan warna Dark Slate -->
-                                <i class="bi bi-person-check-fill" style="font-size: 2.5rem; color: #465A6B !important;"></i>
+                                <!-- Ikon menggunakan warna Info (Biru Muda) -->
+                                <i class="bi bi-person-check-fill text-info" style="font-size: 2.5rem;"></i>
                             </div>
                             <div class="col">
-                                <div class="text-uppercase text-muted small fw-bold">Total Pendaftaran</div>
-                                <div class="h4 mb-0 fw-bold" style="color: #465A6B !important;">{{ total_enrollments }}</div>
-                                <span class="text-muted small">Data Akumulatif</span>
+                                <div class="text-uppercase text-muted small fw-bold">Pendaftaran Terkonfirmasi</div>
+                                <div class="h4 mb-0 fw-bolder text-dark">{{ total_confirmed }}</div>
+                                <span class="text-muted small">Dari {{ total_enrollments }} Total Pendaftaran</span>
                             </div>
                         </div>
                     </div>
@@ -73,14 +75,15 @@
         </div>
 
         <!-- Menu Administrasi Cepat -->
-        <div class="card p-4 mb-5">
-            <h3 class="mb-3" style="color: #465A6B !important;"><i class="bi bi-tools me-2"></i> Menu Administrasi Cepat</h3>
+        <div class="card p-4 mb-5 shadow-lg border-0 rounded-4">
+            <h3 class="mb-4 text-dark fw-bold border-bottom pb-2"><i class="bi bi-tools me-2"></i> Menu Administrasi Cepat</h3>
             <div class="list-group list-group-flush">
                 
                 <!-- Fungsi untuk membuat item list yang konsisten -->
                 {% macro admin_menu_item(url, icon, text, badge_text=none, badge_color='danger') %}
-                <a href="{{ url }}" class="list-group-item list-group-item-action mb-2 rounded-3 hover-scale" style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.1);">
-                    <i class="bi bi-{{ icon }} me-2" style="color: #E9967A;"></i> {{ text }}
+                <a href="{{ url }}" class="list-group-item list-group-item-action mb-2 rounded-3 hover-scale shadow-sm" style="border: 1px solid rgba(0, 0, 0, 0.1);">
+                    <i class="bi bi-{{ icon }} me-3 text-primary fs-5"></i> 
+                    <span class="fw-bold text-dark">{{ text }}</span>
                     {% if badge_text %}
                         <span class="badge bg-{{ badge_color }} float-end">{{ badge_text }}</span>
                     {% endif %}
@@ -89,7 +92,7 @@
 
                 {{ admin_menu_item(url_for('admin_users'), 'person-lines-fill', 'Manajemen Pengguna') }}
                 {{ admin_menu_item(url_for('admin_courses'), 'journal-bookmark-fill', 'Kelola Kursus') }}
-                {{ admin_menu_item(url_for('add_course'), 'plus-circle-fill', 'Tambah Kursus Baru') }}
+                {{ admin_menu_item(url_for('add_course'), 'plus-circle-fill', 'Tambah Kursus Baru', badge_color='success') }}
                 
                 <!-- LINK: Konfirmasi Pembayaran -->
                 {% set pending_count = Enrollment.query.filter_by(is_paid=True, is_confirmed=False).count() %}
@@ -97,7 +100,7 @@
                                    badge_text=pending_count ~ ' Pending' if pending_count > 0 else none) }}
                 
                 <!-- LINK: Manajemen Sertifikat -->
-                {{ admin_menu_item(url_for('admin_certificates'), 'award-fill', 'Manajemen Sertifikat') }}
+                {{ admin_menu_item(url_for('admin_certificates'), 'award-fill', 'Manajemen Sertifikat', badge_color='info') }}
             </div>
         </div>
     {% endif %}
@@ -105,5 +108,7 @@
     <!-- BLOK KONTEN ADMIN UNTUK HALAMAN ANAK (users.html, courses.html, dll.) -->
     {% block admin_content %}
     {% endblock %}
+
+</div> <!-- Tutup container -->
 
 {% endblock %}

@@ -42,8 +42,14 @@ import routes
 
 # --- JIKA ANDA INGIN MENJALANKAN APLIKASI LANGSUNG DARI app.py ---
 if __name__ == '__main__':
-    # Pastikan folder upload ada saat aplikasi dijalankan
-    if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
+    # Pastikan folder IMAGE_FOLDER ada
+    image_path = os.path.join(app.root_path, app.config['IMAGE_FOLDER'])
+    if not os.path.exists(image_path):
+        os.makedirs(image_path)
+    
+    # Pastikan folder PROOF_FOLDER ada
+    proof_path = os.path.join(app.root_path, app.config['PROOF_FOLDER'])
+    if not os.path.exists(proof_path):
+        os.makedirs(proof_path)
         
     app.run(debug=True)

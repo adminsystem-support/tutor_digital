@@ -39,14 +39,23 @@ class Course(db.Model):
     rating = db.Column(db.Float, default=0.0)
     price = db.Column(db.Integer, default=0)
     discount_percent = db.Column(db.Integer, default=0)
-    image_url = db.Column(db.String(255), default='https://via.placeholder.com/400x200.png?text=Jago+Komputer')
-    instructor_image_url = db.Column(db.String(255), default='https://via.placeholder.com/30')
+    duration_hours = db.Column(db.Integer, default=10) # Field baru
+    image_url = db.Column(db.String(255), nullable=True)
+    instructor_image_url = db.Column(db.String(255), nullable=True)
     
     lessons = db.relationship('Lesson', backref='course', lazy='dynamic')
     enrollments = db.relationship('Enrollment', backref='course', lazy='dynamic')
 
     def total_lessons(self):
         return self.lessons.count()
+
+    # METHOD BARU: Hitung total durasi semua pelajaran
+    def total_duration_minutes(self):
+        # Menggunakan db.func.sum untuk menjumlahkan kolom duration_minutes dari semua pelajaran
+        total = db.session.query(db.func.sum(Lesson.duration_minutes)).filter(
+            Lesson.course_id == self.id
+        ).scalar()
+        return total if total is not None else 0
 
     def get_progress(self, user_id):
         total = self.total_lessons()
@@ -74,7 +83,8 @@ class Lesson(db.Model):
     content = db.Column(db.Text)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     order = db.Column(db.Integer)
-
+    duration_minutes = db.Column(db.Integer, default=15) # FIELD BARU
+    
     progresses = db.relationship('LessonProgress', backref='lesson', lazy='dynamic')
 
     def __repr__(self):
